@@ -6,19 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>BlazorApp1</title>
     <base href="/" />
-</head>
-
-<body>
-    <div id="app">Loading...</div>
-    <div id="try">
-        <label>Regex:</label>
-        <input id="regex" type="text" />
-        <br />
-        <label>Text:</label>
-        <input id="value" type="text" />
-        <br />
-        <button id="answer-button">Regex match?</button>
-    </div>
     <script src="blazor.webassembly.js" type="text/javascript"></script>
     <script src="/blazor.webassembly.js" type="text/javascript"></script>
     <script src="/_framework/blazor.webassembly.js" type="text/javascript"></script>
@@ -35,6 +22,19 @@
                 .then(data => alert(data), reason => alert(reason));
         });
     </script>
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+    <div id="try">
+        <label>Regex:</label>
+        <input id="regex" type="text" />
+        <br />
+        <label>Text:</label>
+        <input id="value" type="text" />
+        <br />
+        <button id="answer-button">Regex match?</button>
+    </div>
 </body>
 
 </html>
