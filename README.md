@@ -96,7 +96,7 @@ folder wasnt being able to be download.
 
 Other issue that I faced was related to `Error: No .NET call dispatcher has been set.`, this happened to me because when I commited the `dotnet.6.0.1.5780qzte03.js` file 
 to the gh-pages branch, my git converted the line breaks(`\n\r`) to (`\n`) and that changed the file, when the `blazor.webassembly.js` file trigger the `dotnet.6.0.1.5780qzte03.js` 
-it requires the file to have and specific hash and that hash isnt the same anymore, since the content was changed because the change from `\n\r` to `\n`, so
+it requires the file to have and specific hash(**check integrity**) and that hash isnt the same anymore, since the content was changed because the change from `\n\r` to `\n`, so
 I disabled that behavior on my git and it was fixed.
 
 Git message sample:
