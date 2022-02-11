@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
+using System.Linq;
 using System.Text.RegularExpressions;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-await builder.Build().RunAsync();
+_ = WebAssemblyHostBuilder.CreateDefault(args);
 
 public static class Sample
 {
