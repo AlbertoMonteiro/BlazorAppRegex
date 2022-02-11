@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.min.css"
+        integrity="sha512-zNEMnMjqQJTh1FYoL84ldT9sMKBN4cMu1fTOKJiB23d7wYDht8Bn0XLu6F4sh9i9VV1s8QjYn8UlGw+SR/KLHw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>BlazorApp1</title>
+    <base href="/BlazorAppRegex/" />
+    <link rel="icon" type="image/x-icon" href="/BlazorAppRegex/favicon.ico">
+    <script>
+        window.addEventListener("load", () => {
+            window.editor = monaco.editor.create(document.getElementById('container'), {
+                value: ['{}'].join('\n'),
+                language: 'json'
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+    <div id="try" style="display: none;">
+        <label>Regex:</label>
+        <input id="regex" type="text" value="(?<=[\w\s]+)(?<hey>\d+)(?= with number$)"
+            style="width: 400px;font-family: monospace;" />
+        <br />
+        <label>Text:</label>
+        <textarea id="value" type="text" value="Some value 123 with number" cols="80" rows="10"></textarea>
+        <br />
+        <button id="answer-button">Regex match?</button>
+    </div>
+    <div id="container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        document.querySelector("#app").remove();
+        document.querySelector("#try").style.display = "block";
+        const answerButton = document.querySelector("#answer-button");
+        const regexElement = document.querySelector("#regex");
+        const valueElement = document.querySelector("#value");
+
+        answerButton.addEventListener("click", () => {
+            const appName = "BlazorApp1";
+            const previous = performance.now();
+            const textValue = valueElement.value;
+            DotNet.invokeMethodAsync(appName, "SayHelloCS", regexElement.value, textValue)
+                .then(data => {
+                    const diff = performance.now() - previous;
+                    const str = `Text size: ${textValue.length} evaluated in: ${diff}ms`;
+                    console.log(str);
+                    const json = JSON.stringify(data, null, 2);
+                    window.editor.setValue(json);
+                }, reason => alert(reason));
+        });
+    </script>
+    <script>
+        var require = { paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs' } };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/loader.min.js"
+        integrity="sha512-O9SYDgWAM3bEzit1z6mkFd+dxKUplO/oB8UwYGAkg2Zy/WzDUQ2mYA/ysk3c0CxiXAN4u8T9JeZ0Ahk2Jj/33Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.nls.min.js"
+        integrity="sha512-RBJMO+2Jx4onKLqQIADPuWIVjoc7AJXsOht63iSKCPIxelX/+3SJAH1BKfmCBMUVJdsZPxNbLDQfje0QZMz75A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.js"
+        integrity="sha512-q5FuwQfPfkE43pDXeLPh0CGl0WPAnQtfoCFFbyInQlPeYvQCiq+C7LsrNAnntYJRgNZ62+nBgjhQdOmEwLu/GA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>
