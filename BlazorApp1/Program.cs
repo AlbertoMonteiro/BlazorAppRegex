@@ -9,9 +9,14 @@ await builder.Build().RunAsync();
 public static class Sample
 {
     [JSInvokable]
-    public static string SayHelloCS(string regex, string value)
+    public static object SayHelloCS(string regex, string value)
     {
-        var result = Regex.IsMatch(value, regex).ToString();
-        return result;
+        var result = Regex.Match(value, regex);
+        return new
+        {
+            result.Success,
+            Captures = result.Captures.Cast<Capture>().Select(x => new { x.Index, x.Length, x.Value }),
+            Groups = result.Groups.Cast<Group>().Select(x => new { x.Index, x.Length, x.Success, x.Name, x.Value })
+        };
     }
 }
