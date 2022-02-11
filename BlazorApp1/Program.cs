@@ -8,7 +8,7 @@ public static class Sample
     [Microsoft.JSInterop.JSInvokable]
     public static AllResults SayHelloCS(string regex, string value)
     {
-        var date = System.DateTime.Now;
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var results = Regex.Matches(value, regex);
         var allResults = new Result[results.Count];
         for (int i = 0; i < allResults.Length; i++)
@@ -24,8 +24,8 @@ public static class Sample
             allResults[i] = new Result(result.Success, groups);
         }
 
-        var ms = System.DateTime.Now.Subtract(date).TotalMilliseconds;
-        return new AllResults(allResults, ms);
+        stopwatch.Stop();
+        return new AllResults(allResults, stopwatch.ElapsedMilliseconds);
     }
 }
 
