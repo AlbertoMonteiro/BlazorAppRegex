@@ -12,13 +12,14 @@
     <div id="app">Loading...</div>
     <div id="try" style="display: none;">
         <label>Regex:</label>
-        <input id="regex" type="text" />
+        <input id="regex" type="text" value="(?<=[\w\s]+)(?<hey>\d+)(?= with number$)" style="width: 400px;font-family: monospace;" />
         <br />
         <label>Text:</label>
-        <input id="value" type="text" />
+        <input id="value" type="text" value="Some value 123 with number" style="width: 400px;" />
         <br />
         <button id="answer-button">Regex match?</button>
     </div>
+    <div id="result" style="white-space: pre;font-family: monospace;"></div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>
         document.querySelector("#app").remove();
@@ -26,11 +27,14 @@
         const answerButton = document.querySelector("#answer-button");
         const regexElement = document.querySelector("#regex");
         const valueElement = document.querySelector("#value");
-        
+
         answerButton.addEventListener("click", () => {
             const appName = "BlazorApp1";
             DotNet.invokeMethodAsync(appName, "SayHelloCS", regexElement.value, valueElement.value)
-                .then(data => alert(data), reason => alert(reason));
+                .then(data => {
+                    const json = JSON.stringify(data, null, 2);
+                    document.getElementById("result").textContent = json;
+                }, reason => alert(reason));
         });
     </script>
 </body>
