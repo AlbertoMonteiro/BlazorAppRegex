@@ -18,6 +18,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.101
+        
+    - name: Install wasm-tools
+      run: dotnet workload install wasm-tools
 
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
