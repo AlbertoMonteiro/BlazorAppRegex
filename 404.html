@@ -23,37 +23,96 @@
 
 <body>
     <div id="app">Loading...</div>
-    <div id="try" style="display: none;">
-        <label>Regex:</label>
-        <input id="regex" type="text" value="(?<=[\w\s]+)(?<hey>\d+)(?= with number$)"
-            style="width: 400px;font-family: monospace;" />
-        <br />
-        <label>Text:</label>
-        <textarea id="value" type="text" value="Some value 123 with number" cols="80" rows="10"></textarea>
-        <br />
-        <button id="answer-button">Regex match?</button>
+    <div id="flex-container" style="display: none;">
+        <div id="try" style="flex: 1;">
+            <label>Regex:</label>
+            <input id="regex" type="text" value="(?<=[\w\s]+)(?<hey>\d+)(?= with number$)"
+                style="width: 400px;font-family: monospace;" />
+            <br />
+            <label>Text:</label>
+            <textarea id="value" type="text" value="Some value 123 with number" cols="80" rows="10"></textarea>
+            <br />
+            <label>Options:</label>
+            <ul id="allRegexOptions">
+                <li><label for="optionNone">None</label><input id="optionNone" type="checkbox" name="regexOptions"
+                        value="0" /></li>
+                <li><label for="optionIgnoreCase">IgnoreCase</label><input id="optionIgnoreCase" type="checkbox"
+                        name="regexOptions" value="1" /></li>
+                <li><label for="optionMultiline">Multiline</label><input id="optionMultiline" type="checkbox"
+                        name="regexOptions" value="2" /></li>
+                <li><label for="optionExplicitCapture">ExplicitCapture</label><input id="optionExplicitCapture"
+                        type="checkbox" name="regexOptions" value="4" /></li>
+                <li><label for="optionCompiled">Compiled</label><input id="optionCompiled" type="checkbox"
+                        name="regexOptions" value="8" /></li>
+                <li><label for="optionSingleline">Singleline</label><input id="optionSingleline" type="checkbox"
+                        name="regexOptions" value="16" /></li>
+                <li><label for="optionIgnorePatternWhitespace">IgnorePatternWhitespace</label><input
+                        id="optionIgnorePatternWhitespace" type="checkbox" name="regexOptions" value="32" /></li>
+                <li><label for="optionRightToLeft">RightToLeft</label><input id="optionRightToLeft" type="checkbox"
+                        name="regexOptions" value="64" /></li>
+                <li><label for="optionECMAScript">ECMAScript</label><input id="optionECMAScript" type="checkbox"
+                        name="regexOptions" value="256" /></li>
+                <li><label for="optionCultureInvariant">CultureInvariant</label><input id="optionCultureInvariant"
+                        type="checkbox" name="regexOptions" value="512" /></li>
+            </ul>
+            <br />
+            <button id="answer-button">Regex match?</button>
+        </div>
+        <div id="container" style="flex: 1;min-width: 800px; height: 600px; border: 1px solid grey"></div>
     </div>
-    <div id="container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script type="module">
+        import { BrotliDecode } from './decode.min.js';
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                if (type !== 'dotnetjs' && location.hostname !== 'localhost') {
+                    return (async function () {
+                        const response = await fetch(defaultUri + '.br', { cache: 'no-cache' });
+                        if (!response.ok) {
+                            throw new Error(response.statusText);
+                        }
+                        const originalResponseBuffer = await response.arrayBuffer();
+                        const originalResponseArray = new Int8Array(originalResponseBuffer);
+                        const decompressedResponseArray = BrotliDecode(originalResponseArray);
+                        const contentType = type ===
+                            'dotnetwasm' ? 'application/wasm' : 'application/octet-stream';
+                        return new Response(decompressedResponseArray,
+                            { headers: { 'content-type': contentType } });
+                    })();
+                }
+            }
+        });
+    </script>
     <script>
         document.querySelector("#app").remove();
-        document.querySelector("#try").style.display = "block";
+        document.querySelector("#flex-container").style.display = "flex";
         const answerButton = document.querySelector("#answer-button");
         const regexElement = document.querySelector("#regex");
         const valueElement = document.querySelector("#value");
+        window.regexCallback = function regexCallback(value) {
+            const strJson = BINDING.conv_string(value);
+            performance.mark("after");
+            const measure =  performance.measure("Total", "before", "after");
+            console.log(`Evaluated in: ${measure.duration}ms`);
+            const json = JSON.stringify((JSON.parse(strJson)), null, 2);
+            window.editor.setValue(json);
+            performance.clearMarks();
+            performance.clearMeasures();
+            performance.clearResourceTimings();
+        }
 
         answerButton.addEventListener("click", () => {
+            // var regexOptions = Array.from(document.querySelectorAll("#allRegexOptions input:checked"))
+            //     .map(x => ++x.value)
+            //     .reduce((x, y) => x | y);
             const appName = "BlazorApp1";
-            const previous = performance.now();
             const textValue = valueElement.value;
-            DotNet.invokeMethodAsync(appName, "SayHelloCS", regexElement.value, textValue)
-                .then(data => {
-                    const diff = performance.now() - previous;
-                    const str = `Text size: ${textValue.length} evaluated in: ${diff}ms`;
-                    console.log(str);
-                    const json = JSON.stringify(data, null, 2);
-                    window.editor.setValue(json);
-                }, reason => alert(reason));
+            performance.mark("before");
+            const previous = performance.now();
+            var data = DotNet.invokeMethod(appName, "RegexMatches", regexElement.value, textValue);
+            const diff = performance.now() - previous;
+            const str = `Text size: ${textValue.length} evaluated in: ${diff}ms`;
+            console.log(str);
         });
     </script>
     <script>
