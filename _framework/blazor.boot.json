@@ -7,17 +7,17 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorApp1.dll": "sha256-JeHR0gHJ3NACTQZOr3StGXPRqDNGtjJ8mT+qetmdvd0=",
+      "BlazorApp1.dll": "sha256-8NDfdQBjElFcEserYF1AYTIdp2ww0dd6dFJSwO\/4\/j0=",
       "Microsoft.JSInterop.dll": "sha256-mxlEm+SaBGUQQqoYFyc5mS+BiGoh4aj38cAGUVkKNeg=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-XPrQyiH2\/dG82iON9WRRIzN2yIQl627fdq4gl0bvDLQ=",
       "System.Collections.Concurrent.dll": "sha256-JfZpWJW7AfB15Y2\/94w6AB3hvSiJt1\/soVT72k99X70=",
       "System.Collections.dll": "sha256-g0aCmEVNfnq7TddoHajs+4JnyqQgoomMdtgRURl6PtE=",
       "System.Memory.dll": "sha256-lRwB1NAIqdTCFmx\/EkVtmEXwc\/LOJhl84YtZbJwvFWI=",
-      "System.Private.CoreLib.dll": "sha256-PbZEQ4lt5zLFFwvfzmJPxEObJ+v0c6cZcTe5ZngtmJA=",
+      "System.Private.CoreLib.dll": "sha256-wYEOHdz1n8ZgFCJ9gnWkwijwmcYWC1G22fCtD\/8JQdg=",
       "System.Private.Runtime.InteropServices.JavaScript.dll": "sha256-a7JcmxW\/rrvy339TmBdpkn5ybIDj1MUf2R8ZQSMyAsw=",
       "System.Private.Uri.dll": "sha256-fZytGbrKDnxESICJZKAr2NkiGaIVvvssdVS1HR58oG8=",
       "System.Runtime.CompilerServices.Unsafe.dll": "sha256-KwdHFKy9LFj6xfXZg8Wyi8jq3DQFNrVYYQW2\/YnUW8E=",
-      "System.Runtime.dll": "sha256-C28tbjmuSWXfvKkCKkm\/XvSDU6nD9l8a760IX0JBGBw=",
+      "System.Runtime.dll": "sha256-Njk6dGYmiRge98Aj9oUE2wLNoCztKT0n3qlpa4QBm6c=",
       "System.Text.Encodings.Web.dll": "sha256-FAfkctJyDWyhmq1hV+jt1ZzRbEJN\/vE7pIfvChRaGqQ=",
       "System.Text.Json.dll": "sha256-dyBT3xIgjEiSPFyEERWUOQavsqGQaSCndrTKfYsjZWo=",
       "System.Text.RegularExpressions.dll": "sha256-zR+nnwP32FDDr7BNOkTx3ocMGNyVzp4wNwGdNAYo7q4="
@@ -27,8 +27,8 @@
     "libraryInitializers": null,
     "pdb": null,
     "runtime": {
-      "dotnet.6.0.2.sdpgvbybuv.js": "sha256-AfCZkYKxg7S6xq9opF3Vl1ptRuFMSa2f3u2hZbbQm7s=",
-      "dotnet.wasm": "sha256-4kDWPhR4JyCVAt+7objqbpHcLksOcmVH+5wdzduUwT8="
+      "dotnet.6.0.2.sdpgvbybuv.js": "sha256-HS66j0Zt8xypDRcP8RqLmLGkcsAcIyva4tAIq09JMHw=",
+      "dotnet.wasm": "sha256-kzYEhjQ4tlxbj+KPYnc7l5yCcthg0uRv7qQuMFdM8kI="
     },
     "satelliteResources": null
   }
