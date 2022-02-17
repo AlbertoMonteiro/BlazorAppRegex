@@ -26,11 +26,11 @@
     <div id="flex-container" style="display: none;">
         <div id="try" style="flex: 1;">
             <label>Regex:</label>
-            <input id="regex" type="text" value="(?<=[\w\s]+)(?<hey>\d+)(?= with number$)"
+            <input id="regex" type="text" value="."
                 style="width: 400px;font-family: monospace;" />
             <br />
             <label>Text:</label>
-            <textarea id="value" type="text" value="Some value 123 with number" cols="80" rows="10"></textarea>
+            <textarea id="value" type="text" value="Some value 123 with number" cols="80" rows="10">a</textarea>
             <br />
             <label>Options:</label>
             <ul id="allRegexOptions">
@@ -60,59 +60,31 @@
         </div>
         <div id="container" style="flex: 1;min-width: 800px; height: 600px; border: 1px solid grey"></div>
     </div>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
-    <script type="module">
-        import { BrotliDecode } from './decode.min.js';
-        Blazor.start({
-            loadBootResource: function (type, name, defaultUri, integrity) {
-                if (type !== 'dotnetjs' && location.hostname !== 'localhost') {
-                    return (async function () {
-                        const response = await fetch(defaultUri + '.br', { cache: 'no-cache' });
-                        if (!response.ok) {
-                            throw new Error(response.statusText);
-                        }
-                        const originalResponseBuffer = await response.arrayBuffer();
-                        const originalResponseArray = new Int8Array(originalResponseBuffer);
-                        const decompressedResponseArray = BrotliDecode(originalResponseArray);
-                        const contentType = type ===
-                            'dotnetwasm' ? 'application/wasm' : 'application/octet-stream';
-                        return new Response(decompressedResponseArray,
-                            { headers: { 'content-type': contentType } });
-                    })();
-                }
-            }
-        });
-    </script>
+
     <script>
-        document.querySelector("#app").remove();
-        document.querySelector("#flex-container").style.display = "flex";
-        const answerButton = document.querySelector("#answer-button");
-        const regexElement = document.querySelector("#regex");
-        const valueElement = document.querySelector("#value");
-        window.regexCallback = function regexCallback(value) {
-            const strJson = BINDING.conv_string(value);
+        const myBlazorWorker = new Worker('blazorWebWorker.js');
+        window.myBlazorWorker = myBlazorWorker;
+        myBlazorWorker.addEventListener('message', (e) => {
+            const strJson = e.data;
             performance.mark("after");
-            const measure =  performance.measure("Total", "before", "after");
+            const measure = performance.measure("Total", "before", "after");
             console.log(`Evaluated in: ${measure.duration}ms`);
             const json = JSON.stringify((JSON.parse(strJson)), null, 2);
             window.editor.setValue(json);
             performance.clearMarks();
             performance.clearMeasures();
             performance.clearResourceTimings();
-        }
+        })
+        document.querySelector("#app").remove();
+        document.querySelector("#flex-container").style.display = "flex";
+        const answerButton = document.querySelector("#answer-button");
+        const regexElement = document.querySelector("#regex");
+        const valueElement = document.querySelector("#value");
 
         answerButton.addEventListener("click", () => {
-            // var regexOptions = Array.from(document.querySelectorAll("#allRegexOptions input:checked"))
-            //     .map(x => ++x.value)
-            //     .reduce((x, y) => x | y);
-            const appName = "BlazorApp1";
-            const textValue = valueElement.value;
             performance.mark("before");
-            const previous = performance.now();
-            var data = DotNet.invokeMethod(appName, "RegexMatches", regexElement.value, textValue);
-            const diff = performance.now() - previous;
-            const str = `Text size: ${textValue.length} evaluated in: ${diff}ms`;
-            console.log(str);
+            const textValue = valueElement.value;
+            window.myBlazorWorker.postMessage(JSON.stringify({ regex: regexElement.value, textValue }))
         });
     </script>
     <script>

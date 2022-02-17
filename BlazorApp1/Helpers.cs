@@ -1,25 +1,26 @@
 using Microsoft.JSInterop;
 
+namespace BlazorApp1;
+
 public static class Helpers
 {
     private const string TRUE = "true";
     private const string FALSE = "false";
-    public static IJSUnmarshalledRuntime? JsRuntime;
+    public static CustomRuntime? JsRuntime;
 
     [JSInvokable]
     public static void RegexMatches(string regex, string value)
-    {
-        System.Threading.Tasks.Task.Run(() =>
+        => System.Threading.Tasks.Task.Run(() =>
         {
-            var builder = new System.Text.StringBuilder();
-            var buildSp = System.Diagnostics.Stopwatch.StartNew();
+            var regexSp = BlazorApp1.ValueStopwatch.StartNew();
             var results = System.Text.RegularExpressions.Regex.Matches(value, regex);
+            var builder = new System.Text.StringBuilder();
             builder.Append("{\"matches\":[");
-            int i = 0;
+            var i = 0;
             var result = results[i];
             builder.Append($"{{\"success\":{(result.Success ? TRUE : FALSE)},\"groups\":[");
             var regexGroups = result.Groups;
-            int j = 0;
+            var j = 0;
             var currentGroup = regexGroups[j];
             builder.Append($"{{\"index\":{currentGroup.Index},\"length\":{currentGroup.Length},\"Success\":{(currentGroup.Success ? TRUE : FALSE)},\"name\":{currentGroup.Name},\"value\":\"{currentGroup.Value}\"}}");
             for (j++; j < regexGroups.Count; j++)
@@ -44,9 +45,7 @@ public static class Helpers
                 }
                 builder.Append("]}");
             }
-            buildSp.Stop();
-            builder.Append($"], \"elapsed\": {buildSp.ElapsedMilliseconds} }}");
+            builder = builder.Append($"], \"elapsed\": {regexSp.GetElapsedTime().TotalMilliseconds} }}");
             JsRuntime!.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
         });
-    }
 }

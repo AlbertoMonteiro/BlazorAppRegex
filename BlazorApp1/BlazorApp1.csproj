@@ -1,23 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <PublishTrimmed>true</PublishTrimmed>
-    <RunAotCompilation>true</RunAotCompilation>
-    <TrimMode>link</TrimMode>
-    <!--If this line above get uncommented you need to run this 
-        dotnet workload install wasm-tools-->
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<PublishTrimmed>true</PublishTrimmed>
+		<RunAotCompilation>true</RunAotCompilation>
+		<TrimMode>link</TrimMode>
+		<DebuggerSupport>false</DebuggerSupport>
+		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+		<EventSourceSupport>false</EventSourceSupport>
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+		<UseNativeHttpHandler>true</UseNativeHttpHandler>
+		<UseSystemResourceKeys>false</UseSystemResourceKeys>
+		<BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+		<BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+	</PropertyGroup>
 
-    <!-- Remove some unused features. Shrinks the published app by ~700KB. -->
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
-    <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
+	</ItemGroup>
 
 </Project>

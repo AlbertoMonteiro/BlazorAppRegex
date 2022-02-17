@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.JSInterop;
-
-var builder = Microsoft.AspNetCore.Components.WebAssembly.Hosting.WebAssemblyHostBuilder.CreateDefault(args);
-Helpers.JsRuntime = (IJSUnmarshalledRuntime)builder.Build().Services.GetService<IJSRuntime>();
+BlazorApp1.Helpers.JsRuntime = new CustomRuntime();
+BlazorApp1.Helpers.RegexMatches("", ".");
+public class CustomRuntime : Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime
+{
+}
