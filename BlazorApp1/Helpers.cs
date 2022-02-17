@@ -2,17 +2,21 @@ using Microsoft.JSInterop;
 
 namespace BlazorApp1;
 
+public sealed class CustomRuntime : Microsoft.JSInterop.WebAssembly.WebAssemblyJSRuntime
+{
+}
+
 public static class Helpers
 {
     private const string TRUE = "true";
     private const string FALSE = "false";
-    public static CustomRuntime? JsRuntime;
+    public static CustomRuntime JsRuntime = new();
 
     [JSInvokable]
     public static void RegexMatches(string regex, string value)
         => System.Threading.Tasks.Task.Run(() =>
         {
-            var regexSp = BlazorApp1.ValueStopwatch.StartNew();
+            var regexSp = ValueStopwatch.StartNew();
             var results = System.Text.RegularExpressions.Regex.Matches(value, regex);
             var builder = new System.Text.StringBuilder();
             builder.Append("{\"matches\":[");
@@ -46,6 +50,6 @@ public static class Helpers
                 builder.Append("]}");
             }
             builder = builder.Append($"], \"elapsed\": {regexSp.GetElapsedTime().TotalMilliseconds} }}");
-            JsRuntime!.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
+            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
         });
 }
