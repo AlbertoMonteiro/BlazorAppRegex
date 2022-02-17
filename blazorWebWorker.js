@@ -4,26 +4,12 @@ window = self;
 window.Module = {};
 document = {
     currentScript: {
-        getAttribute: name => {
-            return name == "autostart" ? true : name;
-        }
+        getAttribute: name => name == "autostart" ? true : name
     },
     getElementsByTagName: () => [],
-    addEventListener: (a, b, c, d, e) => {
-        return {
-            hasChildNodes: () => false
-        };
-    },
-    createElement: (a, b, c, d, e) => {
-        return {
-            hasChildNodes: () => false
-        };
-    },
-    createElementNS: (a, b, c, d, e) => {
-        return {
-            hasChildNodes: () => false
-        };
-    },
+    addEventListener: () => ({}),
+    createElement: () => ({}),
+    createElementNS: () => ({}),
     hasChildNodes: () => false,
     baseURI: self.location.origin,
     location: self.location,
@@ -39,10 +25,16 @@ document = {
 let firstTime = true;
 importScripts(src);
 
+const appName = "BlazorApp1";
+
 self.addEventListener('message', (e) => {
     const strJson = JSON.parse(e.data);
-    const appName = "BlazorApp1";
-    self.DotNet.invokeMethod(appName, "RegexMatches", strJson.regex, strJson.textValue);
+    if (strJson.method === "globalMatches")
+        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexMatches`, strJson.regex, strJson.textValue);
+    else if (strJson.method === "oneMatch")
+        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexMatch`, strJson.regex, strJson.textValue);
+    else if (strJson.method === "substitution")
+        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexReplace`, strJson.regex, strJson.textValue, strJson.substitution);
 });
 
 self.regexCallback = window.regexCallback = function regexCallback(value, time) {

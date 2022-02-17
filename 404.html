@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.min.css"
-        integrity="sha512-zNEMnMjqQJTh1FYoL84ldT9sMKBN4cMu1fTOKJiB23d7wYDht8Bn0XLu6F4sh9i9VV1s8QjYn8UlGw+SR/KLHw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+          href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.min.css"
+          integrity="sha512-zNEMnMjqQJTh1FYoL84ldT9sMKBN4cMu1fTOKJiB23d7wYDht8Bn0XLu6F4sh9i9VV1s8QjYn8UlGw+SR/KLHw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>BlazorApp1</title>
     <base href="/BlazorAppRegex/" />
     <link rel="icon" type="image/x-icon" href="/BlazorAppRegex/favicon.ico">
@@ -21,44 +21,29 @@
     </script>
 </head>
 
-<body>
+<body style="height: 100%;">
     <div id="app">Loading...</div>
-    <div id="flex-container" style="display: none;">
-        <div id="try" style="flex: 1;">
-            <label>Regex:</label>
-            <input id="regex" type="text" value="."
-                style="width: 400px;font-family: monospace;" />
-            <br />
-            <label>Text:</label>
-            <textarea id="value" type="text" value="Some value 123 with number" cols="80" rows="10">a</textarea>
-            <br />
-            <label>Options:</label>
-            <ul id="allRegexOptions">
-                <li><label for="optionNone">None</label><input id="optionNone" type="checkbox" name="regexOptions"
-                        value="0" /></li>
-                <li><label for="optionIgnoreCase">IgnoreCase</label><input id="optionIgnoreCase" type="checkbox"
-                        name="regexOptions" value="1" /></li>
-                <li><label for="optionMultiline">Multiline</label><input id="optionMultiline" type="checkbox"
-                        name="regexOptions" value="2" /></li>
-                <li><label for="optionExplicitCapture">ExplicitCapture</label><input id="optionExplicitCapture"
-                        type="checkbox" name="regexOptions" value="4" /></li>
-                <li><label for="optionCompiled">Compiled</label><input id="optionCompiled" type="checkbox"
-                        name="regexOptions" value="8" /></li>
-                <li><label for="optionSingleline">Singleline</label><input id="optionSingleline" type="checkbox"
-                        name="regexOptions" value="16" /></li>
-                <li><label for="optionIgnorePatternWhitespace">IgnorePatternWhitespace</label><input
-                        id="optionIgnorePatternWhitespace" type="checkbox" name="regexOptions" value="32" /></li>
-                <li><label for="optionRightToLeft">RightToLeft</label><input id="optionRightToLeft" type="checkbox"
-                        name="regexOptions" value="64" /></li>
-                <li><label for="optionECMAScript">ECMAScript</label><input id="optionECMAScript" type="checkbox"
-                        name="regexOptions" value="256" /></li>
-                <li><label for="optionCultureInvariant">CultureInvariant</label><input id="optionCultureInvariant"
-                        type="checkbox" name="regexOptions" value="512" /></li>
-            </ul>
-            <br />
-            <button id="answer-button">Regex match?</button>
+    <div id="flex-container" style="display: none; height: 100%">
+        <div id="try" style="flex: 1;height: 100%">
+            <table>
+                <tr>
+                    <td><label>Regex:</label></td>
+                    <td><input id="regex" type="text" value="." style="width: 400px;font-family: monospace;" /></td>
+                </tr>
+                <tr>
+                    <td><label>Text:</label></td>
+                    <td><textarea id="value" type="text" value="Some value 123 with number" cols="60" rows="10">a</textarea></td>
+                </tr>
+                <tr>
+                    <td><label>Substitution:</label></td>
+                    <td><input id="substitution" type="text" value="." style="width: 400px;font-family: monospace;" /></td>
+                </tr>
+                <tr><td colpan="2"><button id="regex-matches">Regex matches</button></td></tr>
+                <tr><td colpan="2"><button id="regex-match">Regex match</button></td></tr>
+                <tr><td colpan="2"><button id="regex-substitution">Regex substituion</button></td></tr>
+            </table>
         </div>
-        <div id="container" style="flex: 1;min-width: 800px; height: 600px; border: 1px solid grey"></div>
+        <div id="container" style="flex: 1;min-width: 800px; min-height: 600px; border: 1px solid grey"></div>
     </div>
 
     <script>
@@ -77,28 +62,35 @@
         })
         document.querySelector("#app").remove();
         document.querySelector("#flex-container").style.display = "flex";
-        const answerButton = document.querySelector("#answer-button");
         const regexElement = document.querySelector("#regex");
         const valueElement = document.querySelector("#value");
+        const substitutionElement = document.querySelector("#substitution");
 
-        answerButton.addEventListener("click", () => {
+        document.querySelector("#regex-matches").addEventListener("click", () => {
             performance.mark("before");
-            const textValue = valueElement.value;
-            window.myBlazorWorker.postMessage(JSON.stringify({ regex: regexElement.value, textValue }))
+            window.myBlazorWorker.postMessage(JSON.stringify({ method: "globalMatches", regex: regexElement.value, textValue: valueElement.value }))
+        });
+        document.querySelector("#regex-match").addEventListener("click", () => {
+            performance.mark("before");
+            window.myBlazorWorker.postMessage(JSON.stringify({ method: "oneMatch", regex: regexElement.value, textValue: valueElement.value }))
+        });
+        document.querySelector("#regex-substitution").addEventListener("click", () => {
+            performance.mark("before");
+            window.myBlazorWorker.postMessage(JSON.stringify({ method: "substitution", regex: regexElement.value, textValue: valueElement.value, substitution: substitutionElement.value }))
         });
     </script>
     <script>
         var require = { paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs' } };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/loader.min.js"
-        integrity="sha512-O9SYDgWAM3bEzit1z6mkFd+dxKUplO/oB8UwYGAkg2Zy/WzDUQ2mYA/ysk3c0CxiXAN4u8T9JeZ0Ahk2Jj/33Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-O9SYDgWAM3bEzit1z6mkFd+dxKUplO/oB8UwYGAkg2Zy/WzDUQ2mYA/ysk3c0CxiXAN4u8T9JeZ0Ahk2Jj/33Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.nls.min.js"
-        integrity="sha512-RBJMO+2Jx4onKLqQIADPuWIVjoc7AJXsOht63iSKCPIxelX/+3SJAH1BKfmCBMUVJdsZPxNbLDQfje0QZMz75A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-RBJMO+2Jx4onKLqQIADPuWIVjoc7AJXsOht63iSKCPIxelX/+3SJAH1BKfmCBMUVJdsZPxNbLDQfje0QZMz75A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.js"
-        integrity="sha512-q5FuwQfPfkE43pDXeLPh0CGl0WPAnQtfoCFFbyInQlPeYvQCiq+C7LsrNAnntYJRgNZ62+nBgjhQdOmEwLu/GA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-q5FuwQfPfkE43pDXeLPh0CGl0WPAnQtfoCFFbyInQlPeYvQCiq+C7LsrNAnntYJRgNZ62+nBgjhQdOmEwLu/GA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>
