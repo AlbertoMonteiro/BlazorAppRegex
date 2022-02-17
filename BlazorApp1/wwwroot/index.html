@@ -67,8 +67,8 @@
         myBlazorWorker.addEventListener('message', (e) => {
             const strJson = e.data;
             performance.mark("after");
-            const measure = performance.measure("Total", "before", "after");
-            console.log(`Evaluated in: ${measure.duration}ms`);
+            performance.measure("Total", "before", "after");
+            console.log(`Evaluated in: ${performance.getEntriesByType("measure")[0].duration}ms`);
             const json = JSON.stringify((JSON.parse(strJson)), null, 2);
             window.editor.setValue(json);
             performance.clearMarks();
