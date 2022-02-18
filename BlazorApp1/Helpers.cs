@@ -120,7 +120,7 @@ public static class Helpers
 
                 if (c >= ' ')
                 {
-                    if (c <= '�')
+                    if (c <= '\u00FF')
                     {
                         stringBuilder.Append(c);
                         continue;
@@ -140,7 +140,7 @@ public static class Helpers
         {
             foreach (var c2 in s2)
             {
-                if (c2 is > '�' or < ' ' or '\\' or '"' or '\r' or '\n' or '\t')
+                if (c2 is > '\u00FF' or < ' ' or '\\' or '"' or '\r' or '\n' or '\t')
                 {
                     return true;
                 }
