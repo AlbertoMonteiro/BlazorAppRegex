@@ -54,7 +54,9 @@
             performance.mark("after");
             performance.measure("Total", "before", "after");
             console.log(`Evaluated in: ${performance.getEntriesByType("measure")[0].duration}ms`);
-            const json = JSON.stringify((JSON.parse(strJson)), null, 2);
+            const json = strJson.indexOf('{') !== -1
+                ? JSON.stringify((JSON.parse(strJson)), null, 2)
+                : strJson;
             window.editor.setValue(json);
             performance.clearMarks();
             performance.clearMeasures();

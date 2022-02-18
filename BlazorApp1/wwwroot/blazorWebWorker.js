@@ -22,27 +22,26 @@ document = {
         }
     }
 };
-let firstTime = true;
 importScripts(src);
 
 const appName = "BlazorApp1";
 
 self.addEventListener('message', (e) => {
     const strJson = JSON.parse(e.data);
+    const flags = 0; //None
     if (strJson.method === "globalMatches")
-        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexMatches`, strJson.regex, strJson.textValue);
+        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexMatches`, strJson.regex, strJson.textValue, flags);
     else if (strJson.method === "oneMatch")
-        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexMatch`, strJson.regex, strJson.textValue);
+        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexMatch`, strJson.regex, strJson.textValue, flags);
     else if (strJson.method === "substitution")
-        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexReplace`, strJson.regex, strJson.textValue, strJson.substitution);
+        self.DotNet.invokeMethod(appName, `${appName}.Helpers:RegexReplace`, strJson.regex, strJson.textValue, strJson.substitution, flags);
 });
 
-self.regexCallback = window.regexCallback = function regexCallback(value, time) {
-    if (firstTime) {
-        firstTime = false
-        return;
-    }
+self.engineInit = window.engineInit = function engineInit(value) {
+    console.log("ready to run");
+}
+
+self.regexCallback = window.regexCallback = function regexCallback(value) {
     const strJson = BINDING.conv_string(value);
-    console.log(`C# time ${time}`);
     self.postMessage(strJson);
 }

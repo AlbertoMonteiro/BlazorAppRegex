@@ -1,5 +1,9 @@
 using Microsoft.JSInterop;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BlazorApp1;
 
@@ -11,142 +15,142 @@ public static class Helpers
 {
     private const string TRUE = "true";
     private const string FALSE = "false";
-    public static readonly CustomRuntime JsRuntime = new();
+    public static IJSUnmarshalledRuntime JsRuntime = new CustomRuntime();
+    private static string _pattern;
+    private static string _value;
+    private static int _flags;
+
+    public static void Init() => JsRuntime.InvokeUnmarshalled<string>("engineInit");
 
     [JSInvokable]
-    public static void RegexMatches(string regex, string value)
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    public static void RegexMatches(string pattern, string value, int flags)
+    {
+        _pattern = pattern;
+        _value = value;
+        _flags = flags;
+        System.Threading.Tasks.Task.Run(RunRegexMatches);
+    }
+
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    private static void RunRegexMatches()
+    {
+        var results = Regex.Matches(_value, _pattern, (RegexOptions)_flags);
+        var builder = new StringBuilder();
+        var i = 0;
+        var result = results[i];
+        builder.Append('[');
+        var regexGroups = result.Groups;
+        var j = 0;
+        builder.Append('[');
+        CreateGroup(regexGroups[j], builder, j);
+        for (j++; j < regexGroups.Count; j++)
+        {
+            builder.Append(',');
+            CreateGroup(regexGroups[j], builder, j);
+        }
+        builder.Append(']');
+
+        for (i++; i < results.Count; i++)
+        {
+            result = results[i];
+            builder.Append(',');
+            regexGroups = result.Groups;
+            j = 0;
+            builder.Append('[');
+            CreateGroup(regexGroups[j], builder, j);
+            for (j++; j < regexGroups.Count; j++)
+            {
+                builder.Append(',');
+                CreateGroup(regexGroups[j], builder, j);
+            }
+            builder.Append(']');
+        }
+        builder = builder.Append(']');
+
+        JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
+    }
+
+    [JSInvokable]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    public static void RegexMatch(string pattern, string value, int flags)
         => System.Threading.Tasks.Task.Run(() =>
         {
-            var regexSp = ValueStopwatch.StartNew();
-            var results = System.Text.RegularExpressions.Regex.Matches(value, regex);
+            var result = Regex.Match(value, pattern, (RegexOptions)flags);
             var builder = new StringBuilder();
             builder.Append('[');
-            var i = 0;
-            var result = results[i];
-            builder.Append($"{{\"success\":{(result.Success ? TRUE : FALSE)},\"groups\":[");
             var regexGroups = result.Groups;
             var j = 0;
-            var currentGroup = regexGroups[j];
-            builder.Append(CreateGroup(currentGroup));
+            builder.Append('[');
+            CreateGroup(regexGroups[j], builder, j);
             for (j++; j < regexGroups.Count; j++)
             {
-                currentGroup = regexGroups[j];
-                builder.Append($",{CreateGroup(currentGroup)}");
+                builder.Append(',');
+                CreateGroup(regexGroups[j], builder, j);
             }
-            builder.Append("]}");
+            builder.Append(']');
+            builder.Append(']');
 
-            for (i++; i < results.Count; i++)
-            {
-                result = results[i];
-                builder.Append($",{{\"success\":{(result.Success ? TRUE : FALSE)},\"groups\":[");
-                regexGroups = result.Groups;
-                j = 0;
-                currentGroup = regexGroups[j];
-                builder.Append(CreateGroup(currentGroup));
-                for (j++; j < regexGroups.Count; j++)
-                {
-                    currentGroup = regexGroups[j];
-                    builder.Append($",{CreateGroup(currentGroup)}");
-                }
-                builder.Append("]}");
-            }
-            builder = builder.Append(']');
-
-            JsRuntime.InvokeUnmarshalled<string, int, int>("regexCallback", builder.ToString(), (int)regexSp.GetElapsedTime().TotalMilliseconds);
+            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
         });
 
     [JSInvokable]
-    public static void RegexMatch(string regex, string value)
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    public static void RegexReplace(string pattern, string value, string replacement, int flags)
         => System.Threading.Tasks.Task.Run(() =>
         {
-            var regexSp = ValueStopwatch.StartNew();
-            var result = System.Text.RegularExpressions.Regex.Match(value, regex);
-            var builder = new StringBuilder();
-            builder.Append($"{{\"success\":{(result.Success ? TRUE : FALSE)},\"groups\":[");
-            var regexGroups = result.Groups;
-            var j = 0;
-            var currentGroup = regexGroups[j];
-            builder.Append(CreateGroup(currentGroup));
-            for (j++; j < regexGroups.Count; j++)
-            {
-                currentGroup = regexGroups[j];
-                builder.Append($",{CreateGroup(currentGroup)}");
-            }
-            builder.Append("]}");
-
-            JsRuntime.InvokeUnmarshalled<string, int, int>("regexCallback", builder.ToString(), (int)regexSp.GetElapsedTime().TotalMilliseconds);
+            var regex = new Regex(pattern, (RegexOptions)flags);
+            var result = regex.Replace(value, replacement);
+            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", result);
         });
 
-    [JSInvokable]
-    public static void RegexReplace(string regex, string value, string replacement)
-        => System.Threading.Tasks.Task.Run(() =>
-        {
-            var regexSp = ValueStopwatch.StartNew();
-            var result = System.Text.RegularExpressions.Regex.Replace(value, regex, replacement);
-
-            JsRuntime.InvokeUnmarshalled<string, int, int>("regexCallback", $"{{ \"result\": \"{EscapeJs(result)}\" }}", (int)regexSp.GetElapsedTime().TotalMilliseconds);
-        });
-
-    static string CreateGroup(System.Text.RegularExpressions.Group currentGroup)
-        => $"{{\"index\":{currentGroup.Index},\"length\":{currentGroup.Length},\"success\":{(currentGroup.Success ? TRUE : FALSE)},\"name\":\"{currentGroup.Name}\",\"value\":\"{EscapeJs(currentGroup.Value)}\"}}";
-
-    static string EscapeJs(string s)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void CreateGroup(Group currentGroup, StringBuilder stringBuilder, int groupIndex)
     {
-        if (s is null)
-            return "";
+        stringBuilder.Append($"{{\"start\":{currentGroup.Index},\"end\":{currentGroup.Index + currentGroup.Length},\"isParticipating\":{(currentGroup.Success ? TRUE : FALSE)},\"groupNum\":{groupIndex},\"groupName\":\"{currentGroup.Name}\",\"content\":\"");
+        EscapeJs(currentGroup.ValueSpan, stringBuilder);
+        stringBuilder.Append('"');
+        stringBuilder.Append('}');
+    }
 
-        if (NeedsEscape(s))
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void EscapeJs(ReadOnlySpan<char> s, StringBuilder stringBuilder)
+    {
+        if (s.IsEmpty)
+            return;
+
+        foreach (var c in s)
         {
-            var stringBuilder = new StringBuilder(s.Length);
-            foreach (var c in s)
+            switch (c)
             {
-                switch (c)
-                {
-                    case '\\':
-                        stringBuilder.Append("\\\\");
-                        continue;
-                    case '"':
-                        stringBuilder.Append("\\\"");
-                        continue;
-                    case '\n':
-                        stringBuilder.Append("\\n");
-                        continue;
-                    case '\t':
-                        stringBuilder.Append("\\t");
-                        continue;
-                    case '\r':
-                        continue;
-                }
-
-                if (c >= ' ')
-                {
-                    if (c <= '\u00FF')
-                    {
-                        stringBuilder.Append(c);
-                        continue;
-                    }
-
-                    stringBuilder.Append("\\u");
-                    ushort num = c;
-                    stringBuilder.Append(num.ToString("X4"));
-                }
+                case '\\':
+                    stringBuilder.Append("\\\\");
+                    continue;
+                case '"':
+                    stringBuilder.Append("\\\"");
+                    continue;
+                case '\n':
+                    stringBuilder.Append("\\n");
+                    continue;
+                case '\t':
+                    stringBuilder.Append("\\t");
+                    continue;
+                case '\r':
+                    continue;
             }
 
-            return stringBuilder.ToString();
-        }
-
-        return s;
-        static bool NeedsEscape(string s2)
-        {
-            foreach (var c2 in s2)
+            if (c >= ' ')
             {
-                if (c2 is > '\u00FF' or < ' ' or '\\' or '"' or '\r' or '\n' or '\t')
+                if (c <= '\u00FF')
                 {
-                    return true;
+                    stringBuilder.Append(c);
+                    continue;
                 }
-            }
 
-            return false;
+                stringBuilder.Append("\\u");
+                ushort num = c;
+                stringBuilder.Append(num.ToString("X4"));
+            }
         }
     }
 }
