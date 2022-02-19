@@ -9,6 +9,30 @@ namespace BlazorUnitTests;
 public class RegexTests
 {
     [Fact]
+    public async Task TestRegexMatchWithWrongRegexAsync()
+    {
+        //arrange
+        var calledMethod = "";
+        var receivedJs = "";
+        var finished = false;
+        Helpers.JsRuntime = Substitute.For<IJSUnmarshalledRuntime>();
+        Helpers.JsRuntime.When(x => x.InvokeUnmarshalled<string, int>("regexCallback", Arg.Any<string>()))
+            .Do(cb =>
+            {
+                finished = true;
+                calledMethod = cb.ArgAt<string>(0);
+                receivedJs = cb.ArgAt<string>(1);
+            });
+        //act
+        Helpers.RegexMatch("(?<some\"InvalidName).", "aa", 0);
+
+        //assert
+        await Task.Run(() => { while (!finished) { } });
+        Assert.Equal("regexCallback", calledMethod);
+        Assert.Equal("[]", receivedJs);
+    }
+
+    [Fact]
     public async Task TestRegexMatchAsync()
     {
         //arrange
@@ -97,5 +121,77 @@ public class RegexTests
         Assert.Equal(1, innerGroup.Current.GetProperty("groupNum").GetInt32());
         Assert.Equal("gn", innerGroup.Current.GetProperty("groupName").GetString());
         Assert.Equal("a", innerGroup.Current.GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public async Task TestRegexMatchesWithWrongRegexAsync()
+    {
+        //arrange
+        var calledMethod = "";
+        var receivedJs = "";
+        var finished = false;
+        Helpers.JsRuntime = Substitute.For<IJSUnmarshalledRuntime>();
+        Helpers.JsRuntime.When(x => x.InvokeUnmarshalled<string, int>("regexCallback", Arg.Any<string>()))
+            .Do(cb =>
+            {
+                finished = true;
+                calledMethod = cb.ArgAt<string>(0);
+                receivedJs = cb.ArgAt<string>(1);
+            });
+        //act
+        Helpers.RegexMatches("(?<g\"n>.)", "aa", 0);
+
+        //assert
+        await Task.Run(() => { while (!finished) { } });
+        Assert.Equal("regexCallback", calledMethod);
+        Assert.Equal("[]", receivedJs);
+    }
+
+    [Fact]
+    public async Task TestRegexReplaceAsync()
+    {
+        //arrange
+        var calledMethod = "";
+        var receivedJs = "";
+        var finished = false;
+        Helpers.JsRuntime = Substitute.For<IJSUnmarshalledRuntime>();
+        Helpers.JsRuntime.When(x => x.InvokeUnmarshalled<string, int>("regexCallback", Arg.Any<string>()))
+            .Do(cb =>
+            {
+                finished = true;
+                calledMethod = cb.ArgAt<string>(0);
+                receivedJs = cb.ArgAt<string>(1);
+            });
+        //act
+        Helpers.RegexReplace(".", "aa", "b", 0);
+
+        //assert
+        await Task.Run(() => { while (!finished) { } });
+        Assert.Equal("regexCallback", calledMethod);
+        Assert.Equal("bb", receivedJs);
+    }
+
+    [Fact]
+    public async Task TestRegexReplaceWithWrongRegexAsync()
+    {
+        //arrange
+        var calledMethod = "";
+        var receivedJs = "";
+        var finished = false;
+        Helpers.JsRuntime = Substitute.For<IJSUnmarshalledRuntime>();
+        Helpers.JsRuntime.When(x => x.InvokeUnmarshalled<string, int>("regexCallback", Arg.Any<string>()))
+            .Do(cb =>
+            {
+                finished = true;
+                calledMethod = cb.ArgAt<string>(0);
+                receivedJs = cb.ArgAt<string>(1);
+            });
+        //act
+        Helpers.RegexReplace("(?<some\"InvalidName).", "aa", "b", 0);
+
+        //assert
+        await Task.Run(() => { while (!finished) { } });
+        Assert.Equal("regexCallback", calledMethod);
+        Assert.Null(receivedJs);
     }
 }

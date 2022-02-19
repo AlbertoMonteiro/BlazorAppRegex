@@ -24,28 +24,15 @@ public static class Helpers
     public static void RegexMatches(string pattern, string value, int flags)
         => System.Threading.Tasks.Task.Run(() =>
         {
-            var results = Regex.Matches(value, pattern, (RegexOptions)flags);
-            var builder = new StringBuilder();
-            var i = 0;
-            var result = results[i];
-            builder.Append('[');
-            var regexGroups = result.Groups;
-            var j = 0;
-            builder.Append('[');
-            CreateGroup(regexGroups[j], builder, j);
-            for (j++; j < regexGroups.Count; j++)
+            try
             {
-                builder.Append(',');
-                CreateGroup(regexGroups[j], builder, j);
-            }
-            builder.Append(']');
-
-            for (i++; i < results.Count; i++)
-            {
-                result = results[i];
-                builder.Append(',');
-                regexGroups = result.Groups;
-                j = 0;
+                var results = Regex.Matches(value, pattern, (RegexOptions)flags);
+                var builder = new StringBuilder();
+                var i = 0;
+                var result = results[i];
+                builder.Append('[');
+                var regexGroups = result.Groups;
+                var j = 0;
                 builder.Append('[');
                 CreateGroup(regexGroups[j], builder, j);
                 for (j++; j < regexGroups.Count; j++)
@@ -54,10 +41,30 @@ public static class Helpers
                     CreateGroup(regexGroups[j], builder, j);
                 }
                 builder.Append(']');
-            }
-            builder = builder.Append(']');
 
-            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
+                for (i++; i < results.Count; i++)
+                {
+                    result = results[i];
+                    builder.Append(',');
+                    regexGroups = result.Groups;
+                    j = 0;
+                    builder.Append('[');
+                    CreateGroup(regexGroups[j], builder, j);
+                    for (j++; j < regexGroups.Count; j++)
+                    {
+                        builder.Append(',');
+                        CreateGroup(regexGroups[j], builder, j);
+                    }
+                    builder.Append(']');
+                }
+                builder = builder.Append(']');
+
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
+            }
+            catch
+            {
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", "[]");
+            }
         });
 
     [JSInvokable]
@@ -65,22 +72,29 @@ public static class Helpers
     public static void RegexMatch(string pattern, string value, int flags)
         => System.Threading.Tasks.Task.Run(() =>
         {
-            var result = Regex.Match(value, pattern, (RegexOptions)flags);
-            var builder = new StringBuilder();
-            builder.Append('[');
-            var regexGroups = result.Groups;
-            var j = 0;
-            builder.Append('[');
-            CreateGroup(regexGroups[j], builder, j);
-            for (j++; j < regexGroups.Count; j++)
+            try
             {
-                builder.Append(',');
+                var result = Regex.Match(value, pattern, (RegexOptions)flags);
+                var builder = new StringBuilder();
+                builder.Append('[');
+                var regexGroups = result.Groups;
+                var j = 0;
+                builder.Append('[');
                 CreateGroup(regexGroups[j], builder, j);
-            }
-            builder.Append(']');
-            builder.Append(']');
+                for (j++; j < regexGroups.Count; j++)
+                {
+                    builder.Append(',');
+                    CreateGroup(regexGroups[j], builder, j);
+                }
+                builder.Append(']');
+                builder.Append(']');
 
-            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", builder.ToString());
+            }
+            catch
+            {
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", "[]");
+            }
         });
 
     [JSInvokable]
@@ -88,9 +102,16 @@ public static class Helpers
     public static void RegexReplace(string pattern, string value, string replacement, int flags)
         => System.Threading.Tasks.Task.Run(() =>
         {
-            var regex = new Regex(pattern, (RegexOptions)flags);
-            var result = regex.Replace(value, replacement);
-            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", result);
+            try
+            {
+                var regex = new Regex(pattern, (RegexOptions)flags);
+                var result = regex.Replace(value, replacement);
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", result);
+            }
+            catch
+            {
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", default(string));
+            }
         });
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
