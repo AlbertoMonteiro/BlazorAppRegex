@@ -21,7 +21,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
-	</ItemGroup>
+		<PackageReference Include="Microsoft.JSInterop.WebAssembly" Version="7.0.0-preview.1.22109.13" />
+        </ItemGroup>
 
 </Project>
