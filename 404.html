@@ -38,9 +38,10 @@
                     <td><label>Substitution:</label></td>
                     <td><input id="substitution" type="text" value="." style="width: 400px;font-family: monospace;" /></td>
                 </tr>
-                <tr><td colpan="2"><button id="regex-matches">Regex matches</button></td></tr>
-                <tr><td colpan="2"><button id="regex-match">Regex match</button></td></tr>
-                <tr><td colpan="2"><button id="regex-substitution">Regex substituion</button></td></tr>
+                <tr><td colpan="2"><button id="regex-matches" style="width:max-content">Regex matches</button></td></tr>
+                <tr><td colpan="2"><button id="regex-match" style="width:max-content">Regex match</button></td></tr>
+                <tr><td colpan="2"><button id="regex-substitution" style="width:max-content">Regex substituion</button></td></tr>
+                <tr><td id="elapsed" colpan="2"></tr>
             </table>
         </div>
         <div id="container" style="flex: 1;min-width: 800px; min-height: 600px; border: 1px solid grey"></div>
@@ -53,8 +54,8 @@
             const strJson = e.data;
             performance.mark("after");
             performance.measure("Total", "before", "after");
-            console.log(`Evaluated in: ${performance.getEntriesByType("measure")[0].duration}ms`);
-            const json = strJson.indexOf('{') !== -1
+            document.getElementById("elapsed").textContent = `Evaluated in: ${performance.getEntriesByType("measure")[0].duration}ms`;
+            const json = strJson && strJson.indexOf('{') !== -1
                 ? JSON.stringify((JSON.parse(strJson)), null, 2)
                 : strJson;
             window.editor.setValue(json);
