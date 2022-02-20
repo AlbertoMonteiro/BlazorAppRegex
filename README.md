@@ -6,7 +6,7 @@ This app is using WebAssembly Blazor and is static hosted in github pages, you c
 
 # Setup
 
-You will need the stable dotnet 6 sdk installed in your machine.
+You will need the stable dotnet 7(preview 1) sdk installed in your machine.
 <br>
 Go to downloads page (https://dotnet.microsoft.com/en-us/download), download and install it.
 <br>
