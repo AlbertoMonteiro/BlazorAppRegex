@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorApp1.dll": "sha256-V6PNwieee4mChFw7pCzoltkIow3K0g43CkhqXinTuGA=",
+      "BlazorApp1.dll": "sha256-KmVoiMwY+KJ2+qUxk7dPo7ICWRnNfJtvuEiuJETqcXY=",
       "Microsoft.JSInterop.dll": "sha256-pSmW8g\/Poc3fyRsbHOEK8j9sggSM\/ZK42OhFUtc5L2U=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-7jtNFDeFlju6JVLdwUpCD1V9Mg\/a92u8XR64XhbRGg0=",
       "System.Collections.Concurrent.dll": "sha256-4TUB8pcnU7FsKNY4tUjzYNhjUyH08nsAz8go65WpZvA=",
@@ -20,7 +20,7 @@
       "System.Runtime.dll": "sha256-Fdn++MZzGdYydm1C1ASVOSrKLDA8vtJq081G9Jt7hpY=",
       "System.Text.Encodings.Web.dll": "sha256-+7oh2dS6zkqfltse7EJOyU1Vmu23qcdoFm13ev1aCBY=",
       "System.Text.Json.dll": "sha256-c88MsLsVY5NmSfoShFL+RfQAiKiTl2gnjelEezlcxB4=",
-      "System.Text.RegularExpressions.dll": "sha256-leSlQ5MYsqU0bSL+zxuywBCF3qR85yAZrgRfqT\/GyEI="
+      "System.Text.RegularExpressions.dll": "sha256-MgMUq00l8zPlSO959CQisUyBTt9fraEIjGk5IHk6AF8="
     },
     "extensions": null,
     "lazyAssembly": null,
@@ -28,7 +28,7 @@
     "pdb": null,
     "runtime": {
       "dotnet.7.0.0-preview.1.22076.8.h3wqx9oxjt.js": "sha256-hRUuL6L8OfTr75U3fp8yp6GdUNys3OcdAYjAK\/K9fQo=",
-      "dotnet.wasm": "sha256-HeMSKTKY6qIP+7QeDL5h9E5jFqxROMv76LQAt5Mg6Lc="
+      "dotnet.wasm": "sha256-auhjTd\/SBoCaQgTZri1BEsHNuIqkVrNDM8I+dGOSk44="
     },
     "satelliteResources": null
   }
