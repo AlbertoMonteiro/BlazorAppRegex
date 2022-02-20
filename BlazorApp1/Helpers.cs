@@ -32,11 +32,11 @@ public static class Helpers
             var regexGroups = result.Groups;
             var j = 0;
             builder.Append('[');
-            CreateGroup(regexGroups[j], builder, j);
+            CreateGroup(regexGroups[j], builder, j, i);
             for (j++; j < regexGroups.Count; j++)
             {
                 builder.Append(',');
-                CreateGroup(regexGroups[j], builder, j);
+                CreateGroup(regexGroups[j], builder, j, i);
             }
             builder.Append(']');
 
@@ -47,11 +47,11 @@ public static class Helpers
                 regexGroups = result.Groups;
                 j = 0;
                 builder.Append('[');
-                CreateGroup(regexGroups[j], builder, j);
+                CreateGroup(regexGroups[j], builder, j, i);
                 for (j++; j < regexGroups.Count; j++)
                 {
                     builder.Append(',');
-                    CreateGroup(regexGroups[j], builder, j);
+                    CreateGroup(regexGroups[j], builder, j, i);
                 }
                 builder.Append(']');
             }
@@ -75,11 +75,11 @@ public static class Helpers
             var regexGroups = result.Groups;
             var j = 0;
             builder.Append('[');
-            CreateGroup(regexGroups[j], builder, j);
+            CreateGroup(regexGroups[j], builder, j, 0);
             for (j++; j < regexGroups.Count; j++)
             {
                 builder.Append(',');
-                CreateGroup(regexGroups[j], builder, j);
+                CreateGroup(regexGroups[j], builder, j, 0);
             }
             builder.Append(']');
             builder.Append(']');
@@ -93,22 +93,22 @@ public static class Helpers
 
     [JSInvokable]
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    public static void RegexReplace(string pattern, string value, string replacement, int flags)
+    public static void RegexReplace(string pattern, string value, string replacement, int flags, bool global)
         => System.Threading.Tasks.Task.Run(() =>
         {
             var regex = new Regex(pattern, (RegexOptions)flags);
-            var result = regex.Replace(value, replacement);
+            var result = global ? regex.Replace(value, replacement) : regex.Replace(value, replacement, 1);
             JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", result);
         }).ContinueWith(t =>
         {
             if (t.IsFaulted)
-                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", "[]");
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", value);
         });
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void CreateGroup(Group currentGroup, StringBuilder stringBuilder, int groupIndex)
+    private static void CreateGroup(Group currentGroup, StringBuilder stringBuilder, int groupIndex, int matchIdx)
     {
-        stringBuilder.Append($"{{\"start\":{currentGroup.Index},\"end\":{currentGroup.Index + currentGroup.Length},\"isParticipating\":{(currentGroup.Success ? TRUE : FALSE)},\"groupNum\":{groupIndex},\"groupName\":\"{currentGroup.Name}\",\"content\":\"");
+        stringBuilder.Append($"{{\"start\":{currentGroup.Index},\"end\":{currentGroup.Index + currentGroup.Length},\"isParticipating\":{(currentGroup.Success ? TRUE : FALSE)},\"groupNum\":{groupIndex},\"match\":{matchIdx},\"groupName\":\"{currentGroup.Name}\",\"content\":\"");
         EscapeJs(currentGroup.ValueSpan, stringBuilder);
         stringBuilder.Append('"');
         stringBuilder.Append('}');
