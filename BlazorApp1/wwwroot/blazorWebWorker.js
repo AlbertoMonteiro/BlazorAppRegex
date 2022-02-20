@@ -1,6 +1,7 @@
-const src = "blazor.webassembly.js";
+const src = "blazor.webassembly.unminified.js";
 
 window = self;
+window.blazorPath = 'static'
 window.Module = {};
 document = {
     currentScript: {
@@ -13,12 +14,24 @@ document = {
     hasChildNodes: () => false,
     baseURI: self.location.origin,
     location: self.location,
+    head: {
+        appendChild: (ele) => {
+            if (ele.text)
+                eval(ele.text);
+            else if (ele.src) {
+                console.log(ele.src);
+                importScripts(ele.src);
+            }
+        }
+    },
     body: {
         appendChild: (ele) => {
             if (ele.text)
                 eval(ele.text);
-            else if (ele.src)
+            else if (ele.src) {
+                console.log(ele.src);
                 importScripts(ele.src);
+            }
         }
     }
 };

@@ -2802,11 +2802,11 @@ class BootConfigResult {
     }
     static async initAsync(loadBootResource, environment) {
         const loaderResponse = loadBootResource !== undefined ?
-            loadBootResource('manifest', 'blazor.boot.json', window['blazorPath'] + 'blazor.boot.json', '') :
-            defaultLoadBlazorBootJson(window['blazorPath'] + 'blazor.boot.json');
+            loadBootResource('manifest', 'blazor.boot.json', `${window['blazorPath']}/blazor.boot.json`, '') :
+            defaultLoadBlazorBootJson(`${window['blazorPath']}/blazor.boot.json`);
         const bootConfigResponse = loaderResponse instanceof Promise ?
             await loaderResponse :
-            await defaultLoadBlazorBootJson(loaderResponse !== null && loaderResponse !== void 0 ? loaderResponse : window['blazorPath'] + 'blazor.boot.json');
+            await defaultLoadBlazorBootJson(loaderResponse !== null && loaderResponse !== void 0 ? loaderResponse : `${window['blazorPath']}/blazor.boot.json`);
         // While we can expect an ASP.NET Core hosted application to include the environment, other
         // hosts may not. Assume 'Production' in the absence of any specified value.
         const applicationEnvironment = environment || bootConfigResponse.headers.get('Blazor-Environment') || 'Production';
