@@ -105,6 +105,27 @@ public static class Helpers
                 JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", value);
         });
 
+    [JSInvokable]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    public static void RegexListReplace(string pattern, string value, string replacement, int flags, bool global)
+        => System.Threading.Tasks.Task.Run(() =>
+        {
+            var sb = new StringBuilder();
+            var regex = new Regex(pattern, (RegexOptions)flags);
+            _ = global ? regex.Replace(value, Append) : regex.Replace(value, Append, 1);
+            JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", sb.ToString());
+
+            string Append(Match match)
+            {
+                sb.Append(match.Result(replacement));
+                return null!;
+            }
+        }).ContinueWith(t =>
+        {
+            if (t.IsFaulted)
+                JsRuntime.InvokeUnmarshalled<string, int>("regexCallback", value);
+        });
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void CreateGroup(Group currentGroup, StringBuilder stringBuilder, int groupIndex, int matchIdx)
     {
