@@ -16,7 +16,7 @@ dotnet --version
 ```
 You should get something like that
 ```bash
-6.0.101
+7.0.100-preview.1.22110.4
 ```
 
 # Running the project
@@ -46,7 +46,12 @@ Then just open in your browser: `http://localhost:5133`
 
 In the repo folder: `REPO_ROOT/BlazorApp1`
 <br>
-To run it, just execute the following command
+You need to install wasm-tools for the first time, it will download an compatible version with your dotnet sdk version
+```bash
+dotnet workload install wasm-tools
+```
+<br>
+Now to run it, just execute the following command
 ```bash
 dotnet publish -c Release -o out
 ```
@@ -82,12 +87,6 @@ The web.config file is needed if you are going to host the app in IIS, so if you
 In the index.html it loads the `_framework/blazor.webassembly.js` and this one will load other files in from the `_framework` folder that is required to run.
 
 That app is hosted in GitHub Pages, you can check the gh-pages branch and go to the app site https://albertomonteiro.github.io/BlazorAppRegex/.
-
-For that app those files were loaded
-
-- _framework/blazor.boot.json
-- _framework/blazor.webassembly.js
-- _framework/dotnet.6.0.1.5780qzte03.js
 
 # GH-Pages
 
