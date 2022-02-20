@@ -163,7 +163,7 @@ public class RegexTests
                 receivedJs = cb.ArgAt<string>(1);
             });
         //act
-        Helpers.RegexReplace(".", "aa", "b", 0);
+        Helpers.RegexReplace(".", "aa", "b", 0, true);
 
         //assert
         await Task.Run(() => { while (!finished) { } });
@@ -187,7 +187,7 @@ public class RegexTests
                 receivedJs = cb.ArgAt<string>(1);
             });
         //act
-        Helpers.RegexReplace("(?<some\"InvalidName).", "aa", "b", 0);
+        Helpers.RegexReplace("(?<some\"InvalidName).", "aa", "b", 0, true);
 
         //assert
         await Task.Run(() => { while (!finished) { } });
