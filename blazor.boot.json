@@ -2,13 +2,13 @@
   "cacheBootResources": true,
   "config": [ ],
   "debugBuild": false,
-  "entryAssembly": "BlazorApp1",
+  "entryAssembly": "Regex101",
   "icuDataMode": 2,
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorApp1.dll": "sha256-pOoSglprf9cW\/DGSP8MK+1LslkS9Gtq9AOkLVtK1URo=",
-      "Microsoft.JSInterop.WebAssembly.dll": "sha256-aO3vUpwFBk\/lwWvdQXg8l8InS7k9Y7FDWcM5zCdqT3o=",
+      "Microsoft.JSInterop.WebAssembly.dll": "sha256-FekjxxWxpVZcf14ilx3c1BUqI2ZdFTtJ03bH6IC\/Ips=",
+      "Regex101.dll": "sha256-ud1y7j857ThxrNYGomof2hHn24nW\/IJDaUxLeeE2zUk=",
       "System.Collections.Concurrent.dll": "sha256-CeVRyHv99fAUoex4nb0CWmYYnlBZ1L1WqxE0sFna6MI=",
       "System.Collections.dll": "sha256-vluyRBYl+N+IWKMQtKfDOrpH3yOIpbrcH+ohtwi1B6Y=",
       "System.Private.CoreLib.dll": "sha256-J4tmqFG65Q0fx3d5mzDjPw9S8FgFrXzTAy3kUpvHY50=",
@@ -23,8 +23,8 @@
     "libraryInitializers": null,
     "pdb": null,
     "runtime": {
-      "dotnet.7.0.0-preview.1.22076.8.h3wqx9oxjt.js": "sha256-UPg3Zz9\/x+b71zQcdRAId2Yl+lxw+m3Ghbr+SSKTwhM=",
-      "dotnet.wasm": "sha256-zFbImXHObx4aDeJOXcUXKUQqK9BKYDoQKivFRBZqWUk="
+      "dotnet.7.0.0-preview.1.22076.8.q1gngnsld7.js": "sha256-sa34VsLd+yJ8ocvWksm7HcWmqkr9JoX06pvSF7F9oJ0=",
+      "dotnet.wasm": "sha256-XtRUKA5zlRPWTvRh03YRDT9KueXCvKOhn+lVrYP1ymg="
     },
     "satelliteResources": null
   }
