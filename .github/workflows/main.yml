@@ -29,7 +29,7 @@ jobs:
     - name: Move _framework to wwwroot
       run: |
         mv ./release/wwwroot/_framework/* ./release/wwwroot/
-        rm ./release/wwwroot/_framework
+        rm ./release/wwwroot/_framework -d
     
     # changes the base-tag in index.html from '/' to 'GitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to GitHubPagesDemo
