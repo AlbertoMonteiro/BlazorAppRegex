@@ -25,6 +25,16 @@ public class RegexTests
     }
 
     [Fact]
+    public void TestRegexMatchEmptyInputAsync()
+    {
+        //act
+        var receivedJs = Helpers.RegexMatch(".", "", 0);
+
+        //assert
+        Assert.Equal("[]", receivedJs);
+    }
+
+    [Fact]
     public void TestRegexMatchesAsync()
     {
         //act
@@ -65,6 +75,16 @@ public class RegexTests
         Assert.Equal(1, innerGroup.Current.GetProperty("groupNum").GetInt32());
         Assert.Equal("gn", innerGroup.Current.GetProperty("groupName").GetString());
         Assert.Equal("a", innerGroup.Current.GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public void TestRegexMatchesEmptyInputAsync()
+    {
+        //act
+        var receivedJs = Helpers.RegexMatches("(?<gn>.)", "", 0);
+
+        //assert
+        Assert.Equal("[]", receivedJs);
     }
 
     [Fact]

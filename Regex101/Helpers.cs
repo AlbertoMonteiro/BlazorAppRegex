@@ -17,8 +17,11 @@ public static class Helpers
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatches(string pattern, string value, int flags)
     {
+        if (string.IsNullOrEmpty(value))
+            return "[]";
         var results = Regex.Matches(value, pattern, (RegexOptions)flags);
         var builder = new StringBuilder();
+
         var i = 0;
         var result = results[i];
         var regexGroups = result.Groups;
@@ -52,8 +55,12 @@ public static class Helpers
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatch(string pattern, string value, int flags)
     {
+        if (string.IsNullOrEmpty(value))
+            return "[]";
+
         var result = Regex.Match(value, pattern, (RegexOptions)flags);
         var builder = new StringBuilder();
+
         var regexGroups = result.Groups;
         var j = 0;
         builder.Append('[').Append('[');
@@ -70,7 +77,7 @@ public static class Helpers
     public static string RegexReplace(string pattern, string value, string replacement, int flags, bool global)
     {
         var regex = new Regex(pattern, (RegexOptions)flags);
-        var result = global ? regex.Replace(value, replacement) : regex.Replace(value, replacement, 1);
+        var result = global ? regex.Replace(value, Regex.Unescape(replacement)) : regex.Replace(value, Regex.Unescape(replacement), 1);
         return result;
     }
 
@@ -84,7 +91,7 @@ public static class Helpers
 
         string Append(Match match)
         {
-            sb.Append(match.Result(replacement));
+            sb.Append(match.Result(Regex.Unescape(replacement)));
             return null!;
         }
     }

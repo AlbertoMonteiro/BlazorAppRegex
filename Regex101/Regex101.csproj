@@ -18,6 +18,7 @@
     <UseSystemResourceKeys>false</UseSystemResourceKeys>
     <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
     <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+    <EmccLinkOptimizationFlag>-O3 -s ENVIRONMENT="worker"</EmccLinkOptimizationFlag>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="Publish">
