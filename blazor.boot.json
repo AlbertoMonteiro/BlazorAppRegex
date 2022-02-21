@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-FekjxxWxpVZcf14ilx3c1BUqI2ZdFTtJ03bH6IC\/Ips=",
-      "Regex101.dll": "sha256-kOYqT5WbfOQ2NP8xkUDClF4T8A3PlZEA3g2rBFVL970=",
+      "Regex101.dll": "sha256-CxQDeJ8eILA06Y8oiDJT3+wK1KiLVYmgdGWXBNLz9ps=",
       "System.Collections.Concurrent.dll": "sha256-CeVRyHv99fAUoex4nb0CWmYYnlBZ1L1WqxE0sFna6MI=",
       "System.Collections.dll": "sha256-vluyRBYl+N+IWKMQtKfDOrpH3yOIpbrcH+ohtwi1B6Y=",
       "System.Private.CoreLib.dll": "sha256-J4tmqFG65Q0fx3d5mzDjPw9S8FgFrXzTAy3kUpvHY50=",
@@ -16,7 +16,7 @@
       "System.Private.Uri.dll": "sha256-YRiHJSbuGxbtYO2DaP46xJGz3VdGHxMiz0Ie0sy0XRY=",
       "System.Runtime.CompilerServices.Unsafe.dll": "sha256-WyGW3gZcJVrhwgtDTXzYd5Igi0uaZT8G4Z4w30QBwhI=",
       "System.Runtime.dll": "sha256-dg5TfMDmwOxYTXCiGYgmSZL2UIwelnD7X9BMhAtHZO4=",
-      "System.Text.RegularExpressions.dll": "sha256-7Ul4FInwUlksyCI4T36sBSSqB9y751fWV3MSnF7J2Rg="
+      "System.Text.RegularExpressions.dll": "sha256-vHOI2dMsnSJWejGEun4VBYvxFtTDTHGk9i\/EmSbJqgU="
     },
     "extensions": null,
     "lazyAssembly": null,
@@ -24,7 +24,7 @@
     "pdb": null,
     "runtime": {
       "dotnet.7.0.0-preview.1.22076.8.q1gngnsld7.js": "sha256-vw+OrEwuXe7Uq3+YxuntTP175vixizEEwtvqLpSlJsk=",
-      "dotnet.wasm": "sha256-yBksF6nN2gpeGq3R6UYZngrq0pQWtE2cZjX+UuHDdJc="
+      "dotnet.wasm": "sha256-6D2x1C7xKlsQa4oHFntSWwa1pfj\/tHUq7Jj9R7KKRa8="
     },
     "satelliteResources": null
   }
