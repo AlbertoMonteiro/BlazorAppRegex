@@ -19,37 +19,34 @@ public static class Helpers
     {
         var results = Regex.Matches(value, pattern, (RegexOptions)flags);
         var builder = new StringBuilder();
-        Func<char, StringBuilder> append = builder.Append;
         var i = 0;
         var result = results[i];
-        append('[');
         var regexGroups = result.Groups;
         var j = 0;
-        append('[');
+        _ = builder.Append('[').Append('[');
         CreateGroup(regexGroups[j], builder, j, i);
         for (j++; j < regexGroups.Count; j++)
         {
-            append(',');
+            _ = builder.Append(',');
             CreateGroup(regexGroups[j], builder, j, i);
         }
-        append(']');
+        _ = builder.Append(']');
 
         for (i++; i < results.Count; i++)
         {
             result = results[i];
-            append(',');
             regexGroups = result.Groups;
             j = 0;
-            append('[');
+            _ = builder.Append(',').Append('[');
             CreateGroup(regexGroups[j], builder, j, i);
             for (j++; j < regexGroups.Count; j++)
             {
-                append(',');
+                _ = builder.Append(',');
                 CreateGroup(regexGroups[j], builder, j, i);
             }
-            append(']');
+            _ = builder.Append(']');
         }
-        return append(']').ToString();
+        return builder.Append(']').ToString();
     }
 
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -57,10 +54,9 @@ public static class Helpers
     {
         var result = Regex.Match(value, pattern, (RegexOptions)flags);
         var builder = new StringBuilder();
-        builder.Append('[');
         var regexGroups = result.Groups;
         var j = 0;
-        builder.Append('[');
+        builder.Append('[').Append('[');
         CreateGroup(regexGroups[j], builder, j, 0);
         for (j++; j < regexGroups.Count; j++)
         {
