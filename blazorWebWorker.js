@@ -9,6 +9,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "DotNet": () => (/* binding */ DotNet)
 /* harmony export */ });
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 // This is a single-file self-contained module to avoid the need for a Webpack build
 var DotNet;
 (function (DotNet) {
@@ -17,11 +19,12 @@ var DotNet;
     const byteArraysToBeRevived = new Map();
     const pendingDotNetToJSStreams = new Map();
     const jsObjectIdKey = "__jsObjectId";
-    const dotNetObjectRefKey = '__dotNetObject';
-    const byteArrayRefKey = '__byte[]';
-    const dotNetStreamRefKey = '__dotNetStream';
+    const dotNetObjectRefKey = "__dotNetObject";
+    const byteArrayRefKey = "__byte[]";
+    const dotNetStreamRefKey = "__dotNetStream";
     const jsStreamReferenceLengthKey = "__jsStreamReferenceLength";
     class JSObject {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         constructor(_jsObject) {
             this._jsObject = _jsObject;
             this._cachedFunctions = new Map();
@@ -33,7 +36,7 @@ var DotNet;
             }
             let result = this._jsObject;
             let lastSegmentValue;
-            identifier.split('.').forEach(segment => {
+            identifier.split(".").forEach(segment => {
                 if (segment in result) {
                     lastSegmentValue = result;
                     result = result[segment];
@@ -47,9 +50,7 @@ var DotNet;
                 this._cachedFunctions.set(identifier, result);
                 return result;
             }
-            else {
-                throw new Error(`The value '${identifier}' is not a function.`);
-            }
+            throw new Error(`The value '${identifier}' is not a function.`);
         }
         getWrappedObject() {
             return this._jsObject;
@@ -58,13 +59,13 @@ var DotNet;
     const pendingAsyncCalls = {};
     const windowJSObjectId = 0;
     const cachedJSObjectsById = {
-        [windowJSObjectId]: new JSObject(window),
+        [windowJSObjectId]: new JSObject(window)
     };
-    cachedJSObjectsById[windowJSObjectId]._cachedFunctions.set('import', (url) => {
+    cachedJSObjectsById[windowJSObjectId]._cachedFunctions.set("import", (url) => {
         // In most cases developers will want to resolve dynamic imports relative to the base HREF.
         // However since we're the one calling the import keyword, they would be resolved relative to
         // this framework bundle URL. Fix this by providing an absolute URL.
-        if (typeof url === 'string' && url.startsWith('./')) {
+        if (typeof url === "string" && url.startsWith("./")) {
             url = document.baseURI + url.substr(2);
         }
         return import(/* webpackIgnore: true */ url);
@@ -123,7 +124,7 @@ var DotNet;
      * @throws Error if the given value is not an Object.
      */
     function createJSObjectReference(jsObject) {
-        if (jsObject && typeof jsObject === 'object') {
+        if (jsObject && typeof jsObject === "object") {
             cachedJSObjectsById[nextJsObjectId] = new JSObject(jsObject);
             const result = {
                 [jsObjectIdKey]: nextJsObjectId
@@ -131,9 +132,7 @@ var DotNet;
             nextJsObjectId++;
             return result;
         }
-        else {
-            throw new Error(`Cannot create a JSObjectReference from the value '${jsObject}'.`);
-        }
+        throw new Error(`Cannot create a JSObjectReference from the value '${jsObject}'.`);
     }
     DotNet.createJSObjectReference = createJSObjectReference;
     /**
@@ -160,10 +159,10 @@ var DotNet;
             length = streamReference.byteLength;
         }
         else {
-            throw new Error('Supplied value is not a typed array or blob.');
+            throw new Error("Supplied value is not a typed array or blob.");
         }
         const result = {
-            [jsStreamReferenceLengthKey]: length,
+            [jsStreamReferenceLengthKey]: length
         };
         try {
             const jsObjectReference = createJSObjectReference(streamReference);
@@ -182,7 +181,7 @@ var DotNet;
      */
     function disposeJSObjectReference(jsObjectReference) {
         const id = jsObjectReference && jsObjectReference[jsObjectIdKey];
-        if (typeof id === 'number') {
+        if (typeof id === "number") {
             disposeJSObjectReferenceById(id);
         }
     }
@@ -206,9 +205,7 @@ var DotNet;
             const resultJson = dispatcher.invokeDotNetFromJS(assemblyName, methodIdentifier, dotNetObjectId, argsJson);
             return resultJson ? parseJsonWithRevivers(resultJson) : null;
         }
-        else {
-            throw new Error('The current dispatcher does not support synchronous calls from JS to .NET. Use invokeMethodAsync instead.');
-        }
+        throw new Error("The current dispatcher does not support synchronous calls from JS to .NET. Use invokeMethodAsync instead.");
     }
     function invokePossibleInstanceMethodAsync(assemblyName, methodIdentifier, dotNetObjectId, args) {
         if (assemblyName && dotNetObjectId) {
@@ -232,7 +229,7 @@ var DotNet;
         if (dotNetDispatcher !== null) {
             return dotNetDispatcher;
         }
-        throw new Error('No .NET call dispatcher has been set.');
+        throw new Error("No .NET call dispatcher has been set.");
     }
     function completePendingCall(asyncCallId, success, resultOrError) {
         if (!pendingAsyncCalls.hasOwnProperty(asyncCallId)) {
@@ -250,6 +247,7 @@ var DotNet;
     /**
      * Represents the type of result expected from a JS interop call.
      */
+    // eslint-disable-next-line no-shadow
     let JSCallResultType;
     (function (JSCallResultType) {
         JSCallResultType[JSCallResultType["Default"] = 0] = "Default";
@@ -311,7 +309,15 @@ var DotNet;
             if (asyncHandle) {
                 // On completion, dispatch result back to .NET
                 // Not using "await" because it codegens a lot of boilerplate
-                promise.then(result => getRequiredDispatcher().endInvokeJSFromDotNet(asyncHandle, true, stringifyArgs([asyncHandle, true, createJSCallResult(result, resultType)])), error => getRequiredDispatcher().endInvokeJSFromDotNet(asyncHandle, false, JSON.stringify([asyncHandle, false, formatError(error)])));
+                promise.then(result => getRequiredDispatcher().endInvokeJSFromDotNet(asyncHandle, true, stringifyArgs([
+                    asyncHandle,
+                    true,
+                    createJSCallResult(result, resultType)
+                ])), error => getRequiredDispatcher().endInvokeJSFromDotNet(asyncHandle, false, JSON.stringify([
+                    asyncHandle,
+                    false,
+                    formatError(error)
+                ])));
             }
         },
         /**
@@ -324,7 +330,7 @@ var DotNet;
             const resultOrError = success
                 ? parseJsonWithRevivers(resultJsonOrExceptionMessage)
                 : new Error(resultJsonOrExceptionMessage);
-            completePendingCall(parseInt(asyncCallId), success, resultOrError);
+            completePendingCall(parseInt(asyncCallId, 10), success, resultOrError);
         },
         /**
          * Receives notification that a byte array is being transferred from .NET to JS.
@@ -335,11 +341,11 @@ var DotNet;
             byteArraysToBeRevived.set(id, data);
         },
         /**
-        * Supplies a stream of data being sent from .NET.
-        *
-        * @param streamId The identifier previously passed to JSRuntime's BeginTransmittingStream in .NET code
-        * @param stream The stream data.
-        */
+         * Supplies a stream of data being sent from .NET.
+         *
+         * @param streamId The identifier previously passed to JSRuntime's BeginTransmittingStream in .NET code
+         * @param stream The stream data.
+         */
         supplyDotNetStream: (streamId, stream) => {
             if (pendingDotNetToJSStreams.has(streamId)) {
                 // The receiver is already waiting, so we can resolve the promise now and stop tracking this
@@ -353,29 +359,26 @@ var DotNet;
                 pendingStream.resolve(stream);
                 pendingDotNetToJSStreams.set(streamId, pendingStream);
             }
-        },
+        }
     };
     function formatError(error) {
         if (error instanceof Error) {
             return `${error.message}\n${error.stack}`;
         }
-        else {
-            return error ? error.toString() : 'null';
-        }
+        return error ? error.toString() : "null";
     }
     function findJSFunction(identifier, targetInstanceId) {
-        let targetInstance = cachedJSObjectsById[targetInstanceId];
+        const targetInstance = cachedJSObjectsById[targetInstanceId];
         if (targetInstance) {
             return targetInstance.findFunction(identifier);
         }
-        else {
-            throw new Error(`JS object instance with ID ${targetInstanceId} does not exist (has it been disposed?).`);
-        }
+        throw new Error(`JS object instance with ID ${targetInstanceId} does not exist (has it been disposed?).`);
     }
     function disposeJSObjectReferenceById(id) {
         delete cachedJSObjectsById[id];
     }
     class DotNetObject {
+        // eslint-disable-next-line no-empty-function
         constructor(_id) {
             this._id = _id;
         }
@@ -386,7 +389,7 @@ var DotNet;
             return invokePossibleInstanceMethodAsync(null, methodIdentifier, this._id, args);
         }
         dispose() {
-            const promise = invokePossibleInstanceMethodAsync(null, '__Dispose', this._id, null);
+            const promise = invokePossibleInstanceMethodAsync(null, "__Dispose", this._id, null);
             promise.catch(error => console.error(error));
         }
         serializeAsArg() {
@@ -395,7 +398,7 @@ var DotNet;
     }
     DotNet.DotNetObject = DotNetObject;
     attachReviver(function reviveReference(key, value) {
-        if (value && typeof value === 'object') {
+        if (value && typeof value === "object") {
             if (value.hasOwnProperty(dotNetObjectRefKey)) {
                 return new DotNetObject(value[dotNetObjectRefKey]);
             }
@@ -405,9 +408,7 @@ var DotNet;
                 if (jsObject) {
                     return jsObject.getWrappedObject();
                 }
-                else {
-                    throw new Error(`JS object instance with Id '${id}' does not exist. It may have been disposed.`);
-                }
+                throw new Error(`JS object instance with Id '${id}' does not exist. It may have been disposed.`);
             }
             else if (value.hasOwnProperty(byteArrayRefKey)) {
                 const index = value[byteArrayRefKey];
@@ -427,14 +428,13 @@ var DotNet;
     });
     class DotNetStream {
         constructor(streamId) {
-            var _a;
             // This constructor runs when we're JSON-deserializing some value from the .NET side.
             // At this point we might already have started receiving the stream, or maybe it will come later.
             // We have to handle both possible orderings, but we can count on it coming eventually because
             // it's not something the developer gets to control, and it would be an error if it doesn't.
             if (pendingDotNetToJSStreams.has(streamId)) {
                 // We've already started receiving the stream, so no longer need to track it as pending
-                this._streamPromise = (_a = pendingDotNetToJSStreams.get(streamId)) === null || _a === void 0 ? void 0 : _a.streamPromise;
+                this._streamPromise = pendingDotNetToJSStreams.get(streamId).streamPromise;
                 pendingDotNetToJSStreams.delete(streamId);
             }
             else {
@@ -445,15 +445,15 @@ var DotNet;
             }
         }
         /**
-        * Supplies a readable stream of data being sent from .NET.
-        */
+         * Supplies a readable stream of data being sent from .NET.
+         */
         stream() {
             return this._streamPromise;
         }
         /**
-        * Supplies a array buffer of data being sent from .NET.
-        * Note there is a JavaScript limit on the size of the ArrayBuffer equal to approximately 2GB.
-        */
+         * Supplies a array buffer of data being sent from .NET.
+         * Note there is a JavaScript limit on the size of the ArrayBuffer equal to approximately 2GB.
+         */
         async arrayBuffer() {
             return new Response(await this.stream()).arrayBuffer();
         }
