@@ -8,12 +8,10 @@
     "build:debug": "node node_modules/webpack-cli/bin/cli.js --mode development --config ./webpack.config.js",
     "build:production": "node node_modules/webpack-cli/bin/cli.js --mode production --config ./webpack.config.js"
   },
-  "dependencies": {
-    "@microsoft/dotnet-js-interop": "^6.0.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.8",
+    "@microsoft/dotnet-js-interop": "7.0.0-preview.1.22109.13",
     "@types/jest": "^27.4.0",
     "@types/jsdom": "^16.2.14",
     "@typescript-eslint/eslint-plugin": "^5.9.1",

@@ -53,39 +53,23 @@ dotnet workload install wasm-tools
 <br>
 Now to run it, just execute the following command
 ```bash
-dotnet publish -c Release -o out
+dotnet publish -c Release -o release
 ```
-That command will produce in the `out` directory the file to run the app.
+That command will produce in the `release` directory the file to run the app.
 
-If you look at the `out` directory, you should see something like that: 
+If you look at the `release` directory, you should see something like that: 
 ```
-│   web.config
-│
 └───wwwroot
-    │   favicon.ico
-    │   icon-192.png
-    │   index.html
-    │
-    └───_framework
-            blazor.boot.json
-            blazor.boot.json.br
-            blazor.boot.json.gz
-            blazor.webassembly.js
-            blazor.webassembly.js.br
-            blazor.webassembly.js.gz
-            BlazorApp1.dll
-            BlazorApp1.dll.br
-            BlazorApp1.dll.gz
-            BlazorApp1.pdb.gz
-            dotnet.6.0.1.5780qzte03.js
-            dotnet.6.0.1.5780qzte03.js.br
-            dotnet.6.0.1.5780qzte03.js.gz
-            more files....
+        blazor.boot.json
+        blazor.boot.json.br
+        blazor.boot.json.gz
+        BlazorApp1.dll
+        BlazorApp1.dll.br
+        BlazorApp1.dll.gz
+        BlazorApp1.pdb.gz
+        blazorWebWorker.js
+        more files....
 ```
-The web.config file is needed if you are going to host the app in IIS, so if you dont skip it and go to wwwroot folder.
-
-In the index.html it loads the `_framework/blazor.webassembly.js` and this one will load other files in from the `_framework` folder that is required to run.
-
 That app is hosted in GitHub Pages, you can check the gh-pages branch and go to the app site https://albertomonteiro.github.io/BlazorAppRegex/.
 
 # GH-Pages

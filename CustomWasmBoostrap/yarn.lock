@@ -1158,10 +1158,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@microsoft/dotnet-js-interop@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@microsoft/dotnet-js-interop/-/dotnet-js-interop-6.0.2.tgz#69dcf4898604002ee5b92448171751f8e20a3534"
-  integrity sha512-6oivc7C/gngqoqWhNhKT5/Np2hopHjhvfCykS8FIUjnPj8uOcEz1PQOEJdByazL7Bff+iYAYuclx4qyJ5bAT9A==
+"@microsoft/dotnet-js-interop@7.0.0-preview.1.22109.13":
+  version "7.0.0-preview.1.22109.13"
+  resolved "https://registry.yarnpkg.com/@microsoft/dotnet-js-interop/-/dotnet-js-interop-7.0.0-preview.1.22109.13.tgz#67b26c892a7fa3ed82f6696cd29ca8c6540145de"
+  integrity sha512-cLqPtKYKZ3jL7osQXc/7vU4zQ6bxtMncRH8OehMu6ygd6hAJIBChPZf+bC9M+5tobsM5rjL0MxgLJ/0wk41VGw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
