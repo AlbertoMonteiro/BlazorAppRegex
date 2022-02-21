@@ -17,67 +17,78 @@ public static class Helpers
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatches(string pattern, string value, int flags)
     {
-        if (string.IsNullOrEmpty(value))
-            return "[]";
-        var results = Regex.Matches(value, pattern, (RegexOptions)flags);
-        var builder = new StringBuilder();
+        var matches = Regex.Matches(value, pattern, (RegexOptions)flags);
+        var sb = new StringBuilder();
 
-        var i = 0;
-        var result = results[i];
-        var regexGroups = result.Groups;
-        var j = 0;
-        _ = builder.Append('[').Append('[');
-        CreateGroup(regexGroups[j], builder, j, i);
-        for (j++; j < regexGroups.Count; j++)
-        {
-            _ = builder.Append(',');
-            CreateGroup(regexGroups[j], builder, j, i);
-        }
-        _ = builder.Append(']');
+        _ = sb.Append('[');
 
-        for (i++; i < results.Count; i++)
-        {
-            result = results[i];
-            regexGroups = result.Groups;
-            j = 0;
-            _ = builder.Append(',').Append('[');
-            CreateGroup(regexGroups[j], builder, j, i);
-            for (j++; j < regexGroups.Count; j++)
-            {
-                _ = builder.Append(',');
-                CreateGroup(regexGroups[j], builder, j, i);
-            }
-            _ = builder.Append(']');
+        for (var matchIdx = 0; matchIdx < matches.Count; matchIdx++) {
+          var match = matches[matchIdx];
+          var groups = match.Groups;
+
+          _ = sb.Append('[');
+
+          for (var groupIdx = 0; groupIdx < groups.Count; groupIdx++) {
+            var group = groups[groupIdx];
+
+            CreateGroup(group, sb, groupIdx, matchIdx);
+
+            sb.Append(',');
+          }
+
+          // Remove last ','
+          sb.Length--;
+          sb.Append(']');
+          sb.Append(',');
         }
-        return builder.Append(']').ToString();
+
+        // Remove last ','
+        if (matches.Count > 0) {
+          sb.Length--;
+        }
+
+        sb.Append(']');
+
+        return sb.ToString();
     }
 
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatch(string pattern, string value, int flags)
     {
-        if (string.IsNullOrEmpty(value))
-            return "[]";
+        var match = Regex.Match(value, pattern, (RegexOptions)flags);
+        var sb = new StringBuilder();
 
-        var result = Regex.Match(value, pattern, (RegexOptions)flags);
-        var builder = new StringBuilder();
+        sb.Append('[');
 
-        var regexGroups = result.Groups;
-        var j = 0;
-        builder.Append('[').Append('[');
-        CreateGroup(regexGroups[j], builder, j, 0);
-        for (j++; j < regexGroups.Count; j++)
-        {
-            builder.Append(',');
-            CreateGroup(regexGroups[j], builder, j, 0);
+        if (match.Success) {
+          sb.Append('[');
+
+          var groups = match.Groups;
+
+          for (var groupIdx = 0; groupIdx < groups.Count; groupIdx++)
+          {
+              var group = groups[groupIdx];
+
+              CreateGroup(group, sb, groupIdx, 0);
+              sb.Append(',');
+          }
+
+          // Remove last ','
+          sb.Length--;
+          sb.Append(']');
         }
-        return builder.Append(']').Append(']').ToString();
+
+
+        sb.Append(']');
+
+        return sb.ToString();
     }
 
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexReplace(string pattern, string value, string replacement, int flags, bool global)
     {
         var regex = new Regex(pattern, (RegexOptions)flags);
-        var result = global ? regex.Replace(value, Regex.Unescape(replacement)) : regex.Replace(value, Regex.Unescape(replacement), 1);
+        var result = global ? regex.Replace(value, replacement) : regex.Replace(value, replacement, 1);
         return result;
     }
 
@@ -91,7 +102,7 @@ public static class Helpers
 
         string Append(Match match)
         {
-            sb.Append(match.Result(Regex.Unescape(replacement)));
+            sb.Append(match.Result(replacement));
             return null!;
         }
     }
