@@ -12,7 +12,7 @@ public static class Helpers
     private const string TRUE = "true";
     private const string FALSE = "false";
 
-    public static void Init() => WebAssemblyJSRuntime.Instance.InvokeUnmarshalled<int>("engineInit");
+    public static void Init() => WebAssemblyJSRuntime.InvokeUnmarshalled<int>("engineInit");
 
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatches(string pattern, string value, int flags)
