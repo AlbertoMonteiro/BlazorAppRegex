@@ -19,38 +19,37 @@ public static class Helpers
     {
         var results = Regex.Matches(value, pattern, (RegexOptions)flags);
         var builder = new StringBuilder();
+        Func<char, StringBuilder> append = builder.Append;
         var i = 0;
         var result = results[i];
-        builder.Append('[');
+        append('[');
         var regexGroups = result.Groups;
         var j = 0;
-        builder.Append('[');
+        append('[');
         CreateGroup(regexGroups[j], builder, j, i);
         for (j++; j < regexGroups.Count; j++)
         {
-            builder.Append(',');
+            append(',');
             CreateGroup(regexGroups[j], builder, j, i);
         }
-        builder.Append(']');
+        append(']');
 
         for (i++; i < results.Count; i++)
         {
             result = results[i];
-            builder.Append(',');
+            append(',');
             regexGroups = result.Groups;
             j = 0;
-            builder.Append('[');
+            append('[');
             CreateGroup(regexGroups[j], builder, j, i);
             for (j++; j < regexGroups.Count; j++)
             {
-                builder.Append(',');
+                append(',');
                 CreateGroup(regexGroups[j], builder, j, i);
             }
-            builder.Append(']');
+            append(']');
         }
-        builder = builder.Append(']');
-
-        return builder.ToString();
+        return append(']').ToString();
     }
 
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -68,10 +67,7 @@ public static class Helpers
             builder.Append(',');
             CreateGroup(regexGroups[j], builder, j, 0);
         }
-        builder.Append(']');
-        builder.Append(']');
-
-        return builder.ToString();
+        return builder.Append(']').Append(']').ToString();
     }
 
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -102,8 +98,7 @@ public static class Helpers
     {
         stringBuilder.Append($"{{\"start\":{currentGroup.Index},\"end\":{currentGroup.Index + currentGroup.Length},\"isParticipating\":{(currentGroup.Success ? TRUE : FALSE)},\"groupNum\":{groupIndex},\"match\":{matchIdx},\"groupName\":\"{currentGroup.Name}\",\"content\":\"");
         EscapeJs(currentGroup.ValueSpan, stringBuilder);
-        stringBuilder.Append('"');
-        stringBuilder.Append('}');
+        stringBuilder.Append('"').Append('}');
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
