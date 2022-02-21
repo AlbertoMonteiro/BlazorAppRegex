@@ -16,7 +16,7 @@ async function fetchAsBrotli(uri) {
 }
 
 const init = async () => {
-    const data = await fetchAsBrotli("/blazor.boot.json");
+    const data = await fetchAsBrotli("blazor.boot.json");
     const manifestJson = await data.json();
     const { assembly, runtime } = manifestJson.resources;
 
