@@ -22,29 +22,32 @@ public static class Helpers
 
         _ = sb.Append('[');
 
-        for (var matchIdx = 0; matchIdx < matches.Count; matchIdx++) {
-          var match = matches[matchIdx];
-          var groups = match.Groups;
+        for (var matchIdx = 0; matchIdx < matches.Count; matchIdx++)
+        {
+            var match = matches[matchIdx];
+            var groups = match.Groups;
 
-          _ = sb.Append('[');
+            _ = sb.Append('[');
 
-          for (var groupIdx = 0; groupIdx < groups.Count; groupIdx++) {
-            var group = groups[groupIdx];
+            for (var groupIdx = 0; groupIdx < groups.Count; groupIdx++)
+            {
+                var group = groups[groupIdx];
 
-            CreateGroup(group, sb, groupIdx, matchIdx);
+                CreateGroup(group, sb, groupIdx, matchIdx);
 
+                sb.Append(',');
+            }
+
+            // Remove last ','
+            sb.Length--;
+            sb.Append(']');
             sb.Append(',');
-          }
-
-          // Remove last ','
-          sb.Length--;
-          sb.Append(']');
-          sb.Append(',');
         }
 
         // Remove last ','
-        if (matches.Count > 0) {
-          sb.Length--;
+        if (matches.Count > 0)
+        {
+            sb.Length--;
         }
 
         sb.Append(']');
@@ -60,24 +63,24 @@ public static class Helpers
 
         sb.Append('[');
 
-        if (match.Success) {
-          sb.Append('[');
+        if (match.Success)
+        {
+            sb.Append('[');
 
-          var groups = match.Groups;
+            var groups = match.Groups;
 
-          for (var groupIdx = 0; groupIdx < groups.Count; groupIdx++)
-          {
-              var group = groups[groupIdx];
+            for (var groupIdx = 0; groupIdx < groups.Count; groupIdx++)
+            {
+                var group = groups[groupIdx];
 
-              CreateGroup(group, sb, groupIdx, 0);
-              sb.Append(',');
-          }
+                CreateGroup(group, sb, groupIdx, 0);
+                sb.Append(',');
+            }
 
-          // Remove last ','
-          sb.Length--;
-          sb.Append(']');
+            // Remove last ','
+            sb.Length--;
+            sb.Append(']');
         }
-
 
         sb.Append(']');
 
