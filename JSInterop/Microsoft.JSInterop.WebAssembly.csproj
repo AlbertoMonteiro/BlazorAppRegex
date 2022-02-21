@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Description>Abstractions and features for interop between .NET WebAssembly and JavaScript code.</Description>
+		<PackageTags>wasm;javascript;interop</PackageTags>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IsShippingPackage>true</IsShippingPackage>
+		<ImplicitUsings>true</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Trimmable>true</Trimmable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="BlazorApp1" />
+	</ItemGroup>
+
+</Project>

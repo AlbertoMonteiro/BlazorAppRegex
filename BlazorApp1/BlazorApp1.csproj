@@ -20,17 +20,17 @@
     <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.JSInterop.WebAssembly" Version="7.0.0-preview.1.22109.13" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="Publish">
     <ItemGroup>
-      <FilesToMove Include="$(PublishDir)wwwroot\_framework\*"/>
+      <FilesToMove Include="$(PublishDir)wwwroot\_framework\*" />
     </ItemGroup>
     <Move SourceFiles="@(FilesToMove)" DestinationFolder="$(PublishDir)\wwwroot" ContinueOnError="true" />
     <RemoveDir Directories="$(PublishDir)wwwroot\_framework" />
     <RemoveDir Directories="$(PublishDir)web.config" />
   </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JSInterop\Microsoft.JSInterop.WebAssembly.csproj" />
+  </ItemGroup>
 
 </Project>

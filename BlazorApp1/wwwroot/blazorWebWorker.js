@@ -925,14 +925,22 @@ function bindStaticMethod(assembly, typeName, method) {
 self.addEventListener('message', (e) => {
     const strJson = JSON.parse(e.data);
     const flags = 0; //None
-    if (strJson.method === "globalMatches")
-        regexMatches(strJson.regex, strJson.textValue, flags);
-    else if (strJson.method === "oneMatch")
-        regexMatch(strJson.regex, strJson.textValue, flags);
-    else if (strJson.method === "substitution")
-        regexReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
-    else if (strJson.method === "listSubstitution")
-        regexListReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
+    if (strJson.method === "globalMatches") {
+        const result = regexMatches(strJson.regex, strJson.textValue, flags);
+        self.postMessage(result);
+    }
+    else if (strJson.method === "oneMatch") {
+        const result = regexMatch(strJson.regex, strJson.textValue, flags);
+        self.postMessage(result);
+    }
+    else if (strJson.method === "substitution") {
+        const result = regexReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
+        self.postMessage(result);
+    }
+    else if (strJson.method === "listSubstitution") {
+        const result = regexListReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
+        self.postMessage(result);
+    }
 });
 
 
