@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Regex101;
 
 BenchmarkRunner.Run<RegexExecutor>();
 
@@ -14,8 +15,6 @@ public class RegexExecutor
     [Benchmark]
     public string Option()
     {
-        /*var result = */BlazorApp1.Helpers.RegexMatches(".", _str, 0);
-        //return result; this is commented because the real method doesnt return, it runs on a task, so when running benchmark I change the code to no use the Task and return directly
-        return "";
+        return Helpers.RegexMatches(".", _str, 0);
     }
 }

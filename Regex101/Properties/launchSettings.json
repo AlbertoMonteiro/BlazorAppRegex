@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "BlazorApp1": {
+    "Regex101": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

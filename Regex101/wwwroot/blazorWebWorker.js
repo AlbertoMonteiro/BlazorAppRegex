@@ -626,7 +626,7 @@ const init = async () => {
     };
 
     // Call init function inside Helpers.cs
-    await BINDING.call_assembly_entry_point('BlazorApp1', [[]], 'm');
+    await BINDING.call_assembly_entry_point('Regex101', [[]], 'm');
 };
 
 async function addResourceAsAssembly(dependency, loadAsName) {
@@ -914,7 +914,7 @@ class MonoHeapLock {
 // Run init to load wasm
 init();
 
-const appName = "BlazorApp1";
+const appName = "Regex101";
 
 function bindStaticMethod(assembly, typeName, method) {
     // Fully qualified name looks like this: "[debugger-test] Math:IntAdd"

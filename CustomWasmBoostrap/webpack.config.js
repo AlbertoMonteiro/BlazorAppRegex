@@ -14,7 +14,7 @@ module.exports = (env, args) => ({
     entry: {
         'blazorWebWorker': './index.js',
     },
-    output: { path: path.join(__dirname, '../', 'BlazorApp1', 'wwwroot'), filename: '[name].js' },
+    output: { path: path.join(__dirname, '../', 'Regex101', 'wwwroot'), filename: '[name].js' },
     performance: {
         maxAssetSize: 122880,
     },

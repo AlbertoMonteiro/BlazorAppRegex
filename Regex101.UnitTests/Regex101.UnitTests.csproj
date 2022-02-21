@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorApp1\BlazorApp1.csproj" />
+    <ProjectReference Include="..\Regex101\Regex101.csproj" />
   </ItemGroup>
 
 </Project>

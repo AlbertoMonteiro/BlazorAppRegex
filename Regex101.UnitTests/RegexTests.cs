@@ -1,12 +1,7 @@
-using BlazorApp1;
-using Microsoft.JSInterop;
-using NSubstitute;
-using System;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace BlazorUnitTests;
+namespace Regex101.UnitTests;
 public class RegexTests
 {
     [Fact]

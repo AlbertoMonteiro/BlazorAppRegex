@@ -59,7 +59,7 @@ const init = async () => {
     };
 
     // Call init function inside Helpers.cs
-    await BINDING.call_assembly_entry_point('BlazorApp1', [[]], 'm');
+    await BINDING.call_assembly_entry_point('Regex101', [[]], 'm');
 };
 
 async function addResourceAsAssembly(dependency, loadAsName) {
@@ -347,7 +347,7 @@ class MonoHeapLock {
 // Run init to load wasm
 init();
 
-const appName = "BlazorApp1";
+const appName = "Regex101";
 
 function bindStaticMethod(assembly, typeName, method) {
     // Fully qualified name looks like this: "[debugger-test] Math:IntAdd"
@@ -358,14 +358,22 @@ function bindStaticMethod(assembly, typeName, method) {
 self.addEventListener('message', (e) => {
     const strJson = JSON.parse(e.data);
     const flags = 0; //None
-    if (strJson.method === "globalMatches")
-        regexMatches(strJson.regex, strJson.textValue, flags);
-    else if (strJson.method === "oneMatch")
-        regexMatch(strJson.regex, strJson.textValue, flags);
-    else if (strJson.method === "substitution")
-        regexReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
-    else if (strJson.method === "listSubstitution")
-        regexListReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
+    if (strJson.method === "globalMatches") {
+        const result = regexMatches(strJson.regex, strJson.textValue, flags);
+        self.postMessage(result);
+    }
+    else if (strJson.method === "oneMatch") {
+        const result = regexMatch(strJson.regex, strJson.textValue, flags);
+        self.postMessage(result);
+    }
+    else if (strJson.method === "substitution") {
+        const result = regexReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
+        self.postMessage(result);
+    }
+    else if (strJson.method === "listSubstitution") {
+        const result = regexListReplace(strJson.regex, strJson.textValue, strJson.substitution, flags, false);
+        self.postMessage(result);
+    }
 });
 
 

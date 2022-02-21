@@ -23,7 +23,7 @@ You should get something like that
 
 First clone it
 <br>
-Then go to the repo folder: `REPO_ROOT/BlazorApp1`
+Then go to the repo folder: `REPO_ROOT/Regex101`
 <br>
 To run it, just execute the following command
 ```bash
@@ -38,13 +38,13 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Development
 info: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Dev\BlazorApp1\BlazorApp1
+      Content root path: C:\Dev\Regex101\Regex101
 ```
 Then just open in your browser: `http://localhost:5133`
 
 # Publishing
 
-In the repo folder: `REPO_ROOT/BlazorApp1`
+In the repo folder: `REPO_ROOT/Regex101`
 <br>
 You need to install wasm-tools for the first time, it will download an compatible version with your dotnet sdk version
 ```bash
@@ -63,10 +63,10 @@ If you look at the `release` directory, you should see something like that:
         blazor.boot.json
         blazor.boot.json.br
         blazor.boot.json.gz
-        BlazorApp1.dll
-        BlazorApp1.dll.br
-        BlazorApp1.dll.gz
-        BlazorApp1.pdb.gz
+        Regex101.dll
+        Regex101.dll.br
+        Regex101.dll.gz
+        Regex101.pdb.gz
         blazorWebWorker.js
         more files....
 ```
