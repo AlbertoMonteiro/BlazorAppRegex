@@ -78,6 +78,26 @@ public class RegexTests
     }
 
     [Fact]
+    public void TestRegexMatchesIssue1Async()
+    {
+        //act
+        var receivedJs = Helpers.RegexMatches("(?m)^[^a]a", "bar\n", 0);
+
+        //assert
+        var doc = JsonDocument.Parse(receivedJs);
+        var array = doc.RootElement.EnumerateArray();
+        array.MoveNext();
+        var innerGroup = array.Current.EnumerateArray();
+        innerGroup.MoveNext();
+        Assert.Equal(0, innerGroup.Current.GetProperty("start").GetInt32());
+        Assert.Equal(2, innerGroup.Current.GetProperty("end").GetInt32());
+        Assert.True(innerGroup.Current.GetProperty("isParticipating").GetBoolean());
+        Assert.Equal(0, innerGroup.Current.GetProperty("groupNum").GetInt32());
+        Assert.Equal("0", innerGroup.Current.GetProperty("groupName").GetString());
+        Assert.Equal("ba", innerGroup.Current.GetProperty("content").GetString());
+    }
+
+    [Fact]
     public void TestRegexMatchesEmptyInputAsync()
     {
         //act

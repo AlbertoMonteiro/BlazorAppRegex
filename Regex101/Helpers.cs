@@ -17,6 +17,9 @@ public static class Helpers
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatches(string pattern, string value, int flags)
     {
+        if (value.EndsWith('\n'))
+            value += '\0'; //workaround for https://github.com/dotnet/runtime/issues/66212
+
         var matches = Regex.Matches(value, pattern, (RegexOptions)flags);
         var sb = new StringBuilder();
 
