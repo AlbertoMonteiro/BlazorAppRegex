@@ -12,9 +12,6 @@ public static class Helpers
     private const string TRUE = "true";
     private const string FALSE = "false";
 
-    public static void Init() => WebAssemblyJSRuntime.InvokeUnmarshalled<int>("engineInit");
-
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatches(string pattern, string value, int flags)
     {
         if (value.EndsWith('\n'))
@@ -58,7 +55,6 @@ public static class Helpers
         return sb.ToString();
     }
 
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexMatch(string pattern, string value, int flags)
     {
         var match = Regex.Match(value, pattern, (RegexOptions)flags);
@@ -90,7 +86,6 @@ public static class Helpers
         return sb.ToString();
     }
 
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexReplace(string pattern, string value, string replacement, int flags, bool global)
     {
         var regex = new Regex(pattern, (RegexOptions)flags);
@@ -98,7 +93,6 @@ public static class Helpers
         return result;
     }
 
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public static string RegexListReplace(string pattern, string value, string replacement, int flags, bool global)
     {
         var sb = new StringBuilder();
