@@ -32,15 +32,15 @@ jobs:
     
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: copy index.html to 404.html
-      run: cp bin/Release/net7.0/browser-wasm/AppBundle/index.html bin/Release/net7.0/browser-wasm/AppBundle/404.html
+      run: cp Regex101/bin/Release/net7.0/browser-wasm/AppBundle/index.html Regex101/bin/Release/net7.0/browser-wasm/AppBundle/404.html
 
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
-      run: touch bin/Release/net7.0/browser-wasm/AppBundle/.nojekyll
+      run: touch Regex101/bin/Release/net7.0/browser-wasm/AppBundle/.nojekyll
       
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: bin/Release/net7.0/browser-wasm/AppBundle
+        FOLDER: Regex101/bin/Release/net7.0/browser-wasm/AppBundle
