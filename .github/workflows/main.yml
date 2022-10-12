@@ -13,7 +13,6 @@ jobs:
     # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v2
 
-    # sets up .NET Core SDK 5.0.101
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
@@ -30,7 +29,7 @@ jobs:
       run: |
         dotnet tool install --global CompressedStaticFiles.Tools
         pushd Regex101/bin/Release/net7.0/browser-wasm/AppBundle
-        dotnet-compress *.* -br -gz
+        dotnet-compress *.* -br -gz --batch 8
         popd
 
     # changes the base-tag in index.html from '/' to 'GitHubPagesDemo' to match GitHub Pages repository subdirectory
