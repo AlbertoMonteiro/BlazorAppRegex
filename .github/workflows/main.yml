@@ -27,8 +27,8 @@ jobs:
       run: dotnet publish -c Release -o release --nologo
     
     # changes the base-tag in index.html from '/' to 'GitHubPagesDemo' to match GitHub Pages repository subdirectory
-    #- name: Change base-tag in index.html from / to GitHubPagesDemo
-    #  run: sed -i 's/<base href="\/" \/>/<base href="\/BlazorAppRegex\/" \/>/g' release/wwwroot/index.html
+    - name: Change base-tag in index.html from / to GitHubPagesDemo
+      run: sed -i 's/<base href="\/" \/>/<base href="\/BlazorAppRegex\/" \/>/g' Regex101/bin/Release/net7.0/browser-wasm/AppBundle/index.html
     
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: copy index.html to 404.html
