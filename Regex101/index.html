@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="modulepreload" href="./main.js" />
+  <link rel="modulepreload" href="./dotnet.js" />
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.min.css"
     integrity="sha512-zNEMnMjqQJTh1FYoL84ldT9sMKBN4cMu1fTOKJiB23d7wYDht8Bn0XLu6F4sh9i9VV1s8QjYn8UlGw+SR/KLHw=="
@@ -61,45 +63,7 @@
     <div id="container" style="flex: 1;min-width: 800px; min-height: 600px; border: 1px solid grey"></div>
   </div>
 
-  <script>
-    const myBlazorWorker = new Worker('blazorWebWorker.js');
-    window.myBlazorWorker = myBlazorWorker;
-    myBlazorWorker.addEventListener('message', (e) => {
-      const strJson = e.data;
-      performance.mark("after");
-      performance.measure("Total", "before", "after");
-      document.getElementById("elapsed").textContent = `Evaluated in: ${performance.getEntriesByType("measure")[0].duration}ms`;
-      const json = strJson && strJson.indexOf('{') !== -1
-        ? JSON.stringify((JSON.parse(strJson)), null, 2)
-        : strJson;
-      window.editor.setValue(json);
-      performance.clearMarks();
-      performance.clearMeasures();
-      performance.clearResourceTimings();
-    })
-    document.querySelector("#app").remove();
-    document.querySelector("#flex-container").style.display = "flex";
-    const regexElement = document.querySelector("#regex");
-    const valueElement = document.querySelector("#value");
-    const substitutionElement = document.querySelector("#substitution");
-
-    document.querySelector("#regex-matches").addEventListener("click", () => {
-      performance.mark("before");
-      window.myBlazorWorker.postMessage(JSON.stringify({ method: "globalMatches", regex: regexElement.value, textValue: valueElement.value }))
-    });
-    document.querySelector("#regex-match").addEventListener("click", () => {
-      performance.mark("before");
-      window.myBlazorWorker.postMessage(JSON.stringify({ method: "oneMatch", regex: regexElement.value, textValue: valueElement.value }))
-    });
-    document.querySelector("#regex-substitution").addEventListener("click", () => {
-      performance.mark("before");
-      window.myBlazorWorker.postMessage(JSON.stringify({ method: "substitution", regex: regexElement.value, textValue: valueElement.value, substitution: substitutionElement.value }))
-    });
-    document.querySelector("#regex-list-substitution").addEventListener("click", () => {
-      performance.mark("before");
-      window.myBlazorWorker.postMessage(JSON.stringify({ method: "listSubstitution", regex: regexElement.value, textValue: valueElement.value, substitution: substitutionElement.value }))
-    });
-  </script>
+  <script type='module' src="./main.js"></script>
   <script>
     var require = { paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs' } };
   </script>

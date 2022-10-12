@@ -1,12 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <TargetArchitecture>wasm</TargetArchitecture>
+    <TargetOS>Browser</TargetOS>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <UseMonoRuntime>true</UseMonoRuntime>
+    <WasmMainJSPath>main.js</WasmMainJSPath>
+    <OutputType>Exe</OutputType>
+    <WasmEnableES6>true</WasmEnableES6>
     <PublishTrimmed>true</PublishTrimmed>
     <RunAotCompilation>true</RunAotCompilation>
-    <TrimMode>link</TrimMode>
+    <TrimMode>full</TrimMode>
     <DebuggerSupport>false</DebuggerSupport>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
     <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
@@ -18,20 +22,18 @@
     <UseSystemResourceKeys>false</UseSystemResourceKeys>
     <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
     <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+    <EnableTimeZoneSupport>false</EnableTimeZoneSupport>
+    <WebAssemblyPreserveCollationData>false</WebAssemblyPreserveCollationData>
     <EmccLinkOptimizationFlag>-O3 -s ENVIRONMENT="worker"</EmccLinkOptimizationFlag>
   </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="Publish">
-    <ItemGroup>
-      <FilesToMove Include="$(PublishDir)wwwroot\_framework\*" />
-    </ItemGroup>
-    <Move SourceFiles="@(FilesToMove)" DestinationFolder="$(PublishDir)\wwwroot" ContinueOnError="true" />
-    <RemoveDir Directories="$(PublishDir)wwwroot\_framework" />
-    <RemoveDir Directories="$(PublishDir)web.config" />
-  </Target>
+  <ItemGroup>
+    <WasmExtraFilesToDeploy Include="index.html" />
+    <WasmExtraFilesToDeploy Include="main.js" />
+    <WasmExtraFilesToDeploy Include="blazorWebWorker.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\JSInterop\Microsoft.JSInterop.WebAssembly.csproj" />
   </ItemGroup>
-
 </Project>
