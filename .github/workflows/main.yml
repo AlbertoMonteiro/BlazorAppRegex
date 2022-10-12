@@ -28,7 +28,7 @@ jobs:
 
     - name: Compress output in gzip and brotli
       run: |
-        dotnet tool install --global CompressedStaticFiles.Tools --version 1.0.0
+        dotnet tool install --global CompressedStaticFiles.Tools
         pushd Regex101/bin/Release/net7.0/browser-wasm/AppBundle
         dotnet-compress *.* -br -gz
         popd
