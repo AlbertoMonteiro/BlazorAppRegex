@@ -32,8 +32,4 @@
     <WasmExtraFilesToDeploy Include="main.js" />
     <WasmExtraFilesToDeploy Include="blazorWebWorker.js" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\JSInterop\Microsoft.JSInterop.WebAssembly.csproj" />
-  </ItemGroup>
 </Project>
