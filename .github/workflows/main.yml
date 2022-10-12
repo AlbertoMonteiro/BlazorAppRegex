@@ -29,7 +29,7 @@ jobs:
       run: |
         dotnet tool install --global CompressedStaticFiles.Tools
         pushd Regex101/bin/Release/net7.0/browser-wasm/AppBundle
-        dotnet-compress *.* -br -gz --batch 8
+        dotnet-compress * **/* -br -gz --batch 8
         popd
 
     # changes the base-tag in index.html from '/' to 'GitHubPagesDemo' to match GitHub Pages repository subdirectory
