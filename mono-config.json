@@ -5,10 +5,6 @@
   "assets": [
     {
       "behavior": "assembly",
-      "name": "Microsoft.JSInterop.WebAssembly.dll"
-    },
-    {
-      "behavior": "assembly",
       "name": "Regex101.dll"
     },
     {
