@@ -33,10 +33,10 @@ self.addEventListener('message', (e) => {
 
 self.engineInit = function engineInit() {
     console.log("ready to run");
-    self.regexMatches = bindStaticMethod("browser", `${appName}.Helpers`, "RegexMatches");
-    self.regexMatch = bindStaticMethod("browser", `${appName}.Helpers`, "RegexMatch");
-    self.regexReplace = bindStaticMethod("browser", `${appName}.Helpers`, "RegexReplace");
-    self.regexListReplace = bindStaticMethod("browser", `${appName}.Helpers`, "RegexListReplace");
+    self.regexMatches = bindStaticMethod(appName, `${appName}.Helpers`, "RegexMatches");
+    self.regexMatch = bindStaticMethod(appName, `${appName}.Helpers`, "RegexMatch");
+    self.regexReplace = bindStaticMethod(appName, `${appName}.Helpers`, "RegexReplace");
+    self.regexListReplace = bindStaticMethod(appName, `${appName}.Helpers`, "RegexListReplace");
 }
 
 self.regexCallback = function regexCallback(value) {
